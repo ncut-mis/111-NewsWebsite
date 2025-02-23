@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('image_text_paragraphs', function (Blueprint $table) {
             $table->id(); // 自動遞增的主鍵欄位，對應到 id
-            $table->foreignId('news_id')->constrained()->onDelete('cascade'); // 新聞編號, 外來鍵
+            $table->foreignId('news_id')->constrained('news')->onDelete('cascade'); // 新聞編號, 外來鍵
             $table->tinyInteger('category'); // 類別: 0(文字), 1(圖片), 2(影片)
             $table->string('title'); // 標題
             $table->text('content'); // 內容 (文字、圖片URL、影片URL)
