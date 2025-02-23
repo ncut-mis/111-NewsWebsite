@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class users extends Model
 {
-    use HasFactory;
+    protected $fillable = ['name', 'email', 'password'];
+    
+    public function favorites()
+    {
+        return $this->hasMany(favorite::class);
+    }
 }

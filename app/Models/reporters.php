@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class reporters extends Model
 {
-    use HasFactory;
+    protected $fillable = ['admin_id'];
+
+    // 設定與 Admin 的關聯
+    public function admin()
+    {
+        return $this->belongsTo(admin::class);
+    }
 }

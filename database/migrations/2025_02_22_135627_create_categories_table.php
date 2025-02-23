@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id(); // 自動遞增的主鍵欄位，對應到 id
+            $table->string('name'); // 類別名稱
+            $table->timestamps(); // 自動生成 created_at 和 updated_at 欄位
         });
     }
 

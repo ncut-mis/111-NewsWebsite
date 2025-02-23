@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reporters', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id(); // 主鍵
+            $table->foreignId('admin_id')->constrained('admins')->onDelete('cascade'); // 外來鍵 (與 admins 資料表連結)
+            $table->timestamps(); // created_at 和 updated_at
         });
     }
 

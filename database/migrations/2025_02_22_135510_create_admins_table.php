@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('admins', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id(); // 主鍵
+            $table->string('name'); // 姓名
+            $table->string('email')->unique(); // 郵件，設為唯一
+            $table->string('password'); // 密碼
+            $table->tinyInteger('role'); // 身分 (0: 記者, 1: 主編)
+            $table->timestamps(); // created_at 和 updated_at
         });
     }
 
