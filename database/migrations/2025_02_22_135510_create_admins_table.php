@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admins', function (Blueprint $table) {
+        Schema::table('admins', function (Blueprint $table) {
             $table->id(); // 主鍵
             $table->string('name'); // 姓名
             $table->string('email')->unique(); // 郵件，設為唯一
@@ -27,5 +27,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('admins');
+        
     }
 };
