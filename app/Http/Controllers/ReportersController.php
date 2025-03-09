@@ -63,4 +63,5 @@ class ReportersController extends Controller
     {
         //
     }
+    
 }

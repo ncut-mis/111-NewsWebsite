@@ -10,7 +10,7 @@ class AdminAuthController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.admin.login');
+        return view('admin.auth.login');
     }
 
     public function login(Request $request)
@@ -25,9 +25,9 @@ class AdminAuthController extends Controller
 
             // 根據角色進行重定向
             if ($role == 0) {
-                return view('admin.reporter.index');
+                return redirect()->route('admin.reporter.dashboard');
             } elseif ($role == 1) {
-                return view('admin.editor.index');
+                return redirect()->route('admin.editor.dashboard');
             } 
         }
 
