@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Models\admins;
+use App\Models\Admin;
 use App\Http\Controllers\AdminAuthController;
 
 
