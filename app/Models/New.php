@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class news extends Model
+class New extends Model
 {
     protected $fillable = ['category_id', 'reporter_id', 'editor_id', 'title', 'status', 'web_version', 'word_version'];
 
