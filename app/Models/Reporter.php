@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reporter extends Model
 {
-    protected $fillable = ['admin_id'];
+    use HasFactory;
+
+    protected $table = 'reporters';
+
+    protected $fillable = [
+        'admin_id',
+    ];
 
     // 設定與 Admin 的關聯
     public function admin()

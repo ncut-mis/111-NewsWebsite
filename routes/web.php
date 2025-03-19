@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Admin;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\ReportersController;
 
 
 /*
@@ -46,5 +47,6 @@ Route::group(['middleware' => 'admin.auth'], function() {
         return view('admin.editor.index'); // 主編的主頁面視圖
     })->name('admin.editor.dashboard');
 });
+
 require __DIR__.'/auth.php';
 
