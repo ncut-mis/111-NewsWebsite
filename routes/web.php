@@ -48,5 +48,10 @@ Route::group(['middleware' => 'admin.auth'], function() {
     })->name('admin.editor.dashboard');
 });
 
+//濤
+Route::get('/my-page',function(){
+    return view('welcome');
+});
+
 require __DIR__.'/auth.php';
 
