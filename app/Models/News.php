@@ -5,9 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class New extends Model
+class News extends Model
 {
+    use HasFactory;
+
+    protected $table = 'news';
+
     protected $fillable = ['category_id', 'reporter_id', 'editor_id', 'title', 'status', 'web_version', 'word_version'];
+
+    protected $casts = [
+        // 在這裡添加您需要的類型轉換
+        'category_id' => 'integer',
+        'reporter_id' => 'integer',
+        'editor_id' => 'integer',
+        'status' => 'boolean',
+        'web_version' => 'string',
+        'word_version' => 'string',
+    ];
 
     // 設定與 Category 的關聯
     public function category()

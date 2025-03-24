@@ -14,9 +14,7 @@ class ReportersController extends Controller
      */
     public function index()
     {
-        $reporters = Reporter::orderBy('id', 'desc')->get();
-
-        return view('admin.reporter.index', compact('reporters'));
+        
     }
 
     /**
@@ -24,7 +22,7 @@ class ReportersController extends Controller
      */
     public function create()
     {
-        return view('admin.reporter.create');
+        
     }
 
     /**
@@ -32,9 +30,7 @@ class ReportersController extends Controller
      */
     public function store(Request $request)
     {
-        Reporter::create($request->all());
-
-        return redirect()->route('admin.reporter.index');
+        
     }
 
     /**
@@ -50,11 +46,7 @@ class ReportersController extends Controller
      */
     public function edit(Reporter $reporter)
     {
-        $data = [
-            'reporter' => $reporter,
-        ];
-
-        return view('admin.reporter.edit', $data);
+        
     }
 
     /**
@@ -62,9 +54,7 @@ class ReportersController extends Controller
      */
     public function update(Request $request, Reporter $reporter) // 修改參數類型
     {
-        $reporter->update($request->all());
-
-        return redirect()->route('admin.reporter.index');
+        
     }
 
     /**
@@ -72,9 +62,7 @@ class ReportersController extends Controller
      */
     public function destroy(Reporter $reporter)
     {
-        $reporter->delete();
-
-        return redirect()->route('admin.reporter.index');
+        
     }
     
 }

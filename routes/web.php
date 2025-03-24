@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Admin;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\ReportersController;
-
+use App\Http\Controllers\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,8 +26,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -39,13 +37,20 @@ Route::post('admin/login', [AdminAuthController::class, 'login']);
 Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
 Route::group(['middleware' => 'admin.auth'], function() {
-    Route::get('admin/reporter/dashboard', function () {
-        return view('admin.reporter.index');
-    })->name('admin.reporter.dashboard');
+    Route::get('admin/reporter/dashboard', [NewsController::class, 'index'])->name("admin.reporter.dashboard");
 
     Route::get('admin/editor/dashboard', function () {
         return view('admin.editor.index'); // 主編的主頁面視圖
     })->name('admin.editor.dashboard');
+});
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('reporter', [NewsController::class, 'index'])->name("reporter.index");
+    Route::get('reporter/create', [NewsController::class, 'create'])->name("reporter.create");
+    Route::post('reporter', [NewsController::class, 'store'])->name("reporter.store");
+    Route::get('reporter/{news}/edit', [NewsController::class, 'edit'])->name("reporter.edit");
+    Route::patch('reporter/{news}', [NewsController::class, 'update'])->name("reporter.update");
+    Route::patch('reporter/{news}/submit', [NewsController::class, 'submit'])->name("reporter.submit");
+    Route::delete('reporter/{news}', [NewsController::class, 'destroy'])->name("reporter.destroy");
 });
 
 require __DIR__.'/auth.php';
