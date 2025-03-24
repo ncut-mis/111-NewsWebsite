@@ -53,5 +53,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::delete('reporter/{news}', [NewsController::class, 'destroy'])->name("reporter.destroy");
 });
 
+//濤
+Route::get('/my-page',function(){
+    return view('welcome');
+});
+
 require __DIR__.'/auth.php';
 
