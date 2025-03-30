@@ -11,9 +11,16 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::orderBy('id', 'desc')->get();
+        $status = $request->query('status', null); // 獲取狀態參數
+        $query = News::orderBy('id', 'desc');
+
+        if (!is_null($status)) {
+            $query->where('status', $status); // 根據狀態篩選
+        }
+
+        $news = $query->get();
 
         $data = [
             'news' => $news,

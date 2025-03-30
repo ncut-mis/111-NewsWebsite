@@ -8,11 +8,29 @@
                     </div>
                     主控台
                 </a>
-                <a class="nav-link" href="{{ route('staff.reporter.dashboard') }}">
+                <a class="nav-link" href="{{ route('staff.reporter.index', ['status' => 0]) }}">
                     <div class="sb-nav-link-icon">
-                        <i class="fas fa-tachometer-alt"></i>
+                        <i class="fas fa-edit"></i>
                     </div>
-                    新聞管理
+                    撰稿中
+                </a>
+                <a class="nav-link" href="{{ route('staff.reporter.index', ['status' => 1]) }}">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    待審核
+                </a>
+                <a class="nav-link" href="{{ route('staff.reporter.index', ['status' => 2]) }}">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    已上線
+                </a>
+                <a class="nav-link" href="{{ route('staff.reporter.index', ['status' => 3]) }}">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-times"></i>
+                    </div>
+                    被退回
                 </a>
             </div>
         </div>

@@ -6,7 +6,19 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">新聞管理</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">新聞一覽表</li>
+        <li class="breadcrumb-item active">
+            @if(request('status') === null)
+                全部新聞
+            @elseif(request('status') == 0)
+                撰稿中
+            @elseif(request('status') == 1)
+                待審核
+            @elseif(request('status') == 2)
+                已上線
+            @elseif(request('status') == 3)
+                被退回
+            @endif
+        </li>
     </ol>
     <!-- Main Content -->
     <div class="alert alert-success alert-dismissible" role="alert" id="liveAlert">
