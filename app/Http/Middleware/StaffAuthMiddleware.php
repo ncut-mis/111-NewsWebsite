@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class AdminAuthMiddleware
+class StaffAuthMiddleware
 {
     public function handle($request, Closure $next, $guard = 'staff') // 修改 guard 為 'staff'
     {

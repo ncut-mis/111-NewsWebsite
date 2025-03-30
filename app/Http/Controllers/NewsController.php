@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\News;
 use App\Models\Category;
 
-
 class NewsController extends Controller
 {
     /**
@@ -20,13 +19,13 @@ class NewsController extends Controller
             'news' => $news,
         ];
 
-        return view('admin.reporter.index', $data);
+        return view('staff.reporter.index', $data);
     }
    
     public function create()
     {
         $categories = Category::all(); // 確保這裡的變數是正確的
-        return view('admin.reporter.create', ['news' => new News(), 'categories' => $categories]);
+        return view('staff.reporter.create', ['news' => new News(), 'categories' => $categories]);
     }
 
     /**
@@ -47,7 +46,7 @@ class NewsController extends Controller
         }
         News::create($data);
 
-        return redirect()->route('admin.reporter.index');
+        return redirect()->route('staff.reporter.index');
     }
 
     /**
@@ -63,7 +62,7 @@ class NewsController extends Controller
      */
     public function edit(News $news) // 確保這裡的參數是正確的
     {
-        return view('admin.reporter.edit', ['news' => $news]);
+        return view('staff.reporter.edit', ['news' => $news]);
     }
 
     /**
@@ -73,14 +72,14 @@ class NewsController extends Controller
     {
         $news->update($request->all());
         
-        return redirect()->route('admin.reporter.index')->with('success', '更新成功！');
+        return redirect()->route('staff.reporter.index')->with('success', '更新成功！');
     }
 
     public function submit(Request $request, News $news) // 確保這裡的參數是正確的
     {
         $news->update($request->all());
 
-        return redirect()->route('admin.reporter.index',['news' => $news]);
+        return redirect()->route('staff.reporter.index',['news' => $news]);
     }
 
     /**
@@ -90,6 +89,6 @@ class NewsController extends Controller
     {
         $news->delete();
 
-        return redirect()->route('admin.reporter.index')->with('success', '刪除成功！');;
+        return redirect()->route('staff.reporter.index')->with('success', '刪除成功！');;
     }
 }

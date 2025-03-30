@@ -1,4 +1,4 @@
-@extends('admin.editor.layouts.master')
+@extends('staff.editor.layouts.master')
 
 @section('page-title', '主編後台')
 

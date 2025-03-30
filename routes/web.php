@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Models\Admin;
-use App\Http\Controllers\AdminAuthController;
+use App\Models\Staff;
+use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\ReportersController;
 use App\Http\Controllers\NewsController;
 
@@ -32,18 +32,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 //後台登入
-Route::get('admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
-Route::post('admin/login', [AdminAuthController::class, 'login']);
-Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+Route::get('staff/login', [StaffAuthController::class, 'showLoginForm'])->name('staff.login');
+Route::post('staff/login', [StaffAuthController::class, 'login']);
+Route::post('/logout', [StaffAuthController::class, 'logout'])->name('staff.logout');
 
-Route::group(['middleware' => 'admin.auth'], function() {
-    Route::get('admin/reporter/dashboard', [NewsController::class, 'index'])->name("admin.reporter.dashboard");
+Route::group(['middleware' => 'staff.auth'], function() {
+    Route::get('staff/reporter/dashboard', [NewsController::class, 'index'])->name("staff.reporter.dashboard");
 
-    Route::get('admin/editor/dashboard', function () {
-        return view('admin.editor.index'); // 主編的主頁面視圖
-    })->name('admin.editor.dashboard');
+    Route::get('staff/editor/dashboard', function () {
+        return view('staff.editor.index'); // 主編的主頁面視圖
+    })->name('staff.editor.dashboard');
 });
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('staff')->name('staff.')->group(function () {
     Route::get('reporter', [NewsController::class, 'index'])->name("reporter.index");
     Route::get('reporter/create', [NewsController::class, 'create'])->name("reporter.create");
     Route::post('reporter', [NewsController::class, 'store'])->name("reporter.store");

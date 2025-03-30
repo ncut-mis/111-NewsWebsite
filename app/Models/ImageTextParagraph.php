@@ -14,4 +14,9 @@ class ImageTextParagraph extends Model
     {
         return $this->belongsTo(news::class);
     }
+
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order');
+    }
 }

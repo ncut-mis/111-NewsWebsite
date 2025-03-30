@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Editor extends Model
 {
-    protected $fillable = ['admin_id'];
+    protected $fillable = ['staff_id'];
 
-    // 設定與 Admin 的關聯
-    public function admin()
+    // 設定與 Staff 的關聯
+    public function staff()
     {
-        return $this->belongsTo(admin::class);
+        return $this->belongsTo(Staff::class);
     }
 }

@@ -48,6 +48,6 @@ class News extends Model
 
     public function imageTextParagraphs()
     {
-        return $this->hasMany(image_text_paragraph::class);
+        return $this->hasMany(ImageTextParagraph::class)->ordered();
     }
 }

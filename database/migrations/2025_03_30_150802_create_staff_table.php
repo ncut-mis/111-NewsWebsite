@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('admins', function (Blueprint $table) {
+        Schema::create('staff', function (Blueprint $table) { // 將資料表名稱改為 staff
             $table->id(); // 主鍵
             $table->string('name'); // 姓名
             $table->string('email')->unique(); // 郵件，設為唯一
             $table->string('password'); // 密碼
             $table->tinyInteger('role'); // 身分 (0: 記者, 1: 主編)
             $table->timestamps(); // created_at 和 updated_at
+            $table->boolean('is_active')->default(true); // 新增 is_active 欄位，預設值為 true
         });
     }
 
@@ -26,7 +27,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admins');
-        
+        Schema::create('staff', function (Blueprint $table) {
+            $table->dropColumn('is_active'); // 移除 is_active 欄位
+        });
     }
 };
