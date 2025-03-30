@@ -17,8 +17,8 @@
             </div>
         </div>
         <div class="sb-sidenav-footer">
-            <div class="small">登入身分:</div>
-            記者
+            <div class="small">登入身份:</div>
+            {{ Auth::guard('staff')->user()->name }}
         </div>
     </nav>
 </div>
