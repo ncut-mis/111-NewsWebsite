@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\editors;
+use App\Models\Editors; // 確保正確引入模型
+use App\Models\News;
 use App\Http\Requests\StoreeditorsRequest;
 use App\Http\Requests\UpdateeditorsRequest;
 
@@ -13,7 +14,8 @@ class EditorsController extends Controller
      */
     public function index()
     {
-        //
+        $news = News::where('status', 1)->get(); // 從資料庫中抓取狀態為 1 的新聞
+        return view('staff.editor.index', compact('news')); // 使用 compact 傳遞 $news 到視圖
     }
 
     /**

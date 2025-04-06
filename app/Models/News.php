@@ -18,7 +18,7 @@ class News extends Model
         'category_id' => 'integer',
         'reporter_id' => 'integer',
         'editor_id' => 'integer',
-        'status' => 'boolean',
+        'status' => 'integer', // 確保 status 為整數類型
         'web_version' => 'string',
         'word_version' => 'string',
     ];

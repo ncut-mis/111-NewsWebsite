@@ -5,7 +5,9 @@
 @section('page-content')
 <div class="container-fluid px-4">
     <h1 class="mt-4">類別管理</h1>
-    <a href="{{ route('staff.editor.categories.create') }}" class="btn btn-primary mb-3">新增類別</a>
+    <div class="text-end">
+        <a href="{{ route('staff.editor.categories.create') }}" class="btn btn-primary mb-3">新增類別</a>
+    </div>
     <table class="table table-bordered">
         <thead>
             <tr>

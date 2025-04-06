@@ -89,6 +89,12 @@ class NewsController extends Controller
         return redirect()->route('staff.reporter.index',['news' => $news]);
     }
 
+    public function approve(News $news)
+    {
+        $news->update(['status' => 2]); // 將狀態更新為 2，表示已審核
+        return redirect()->route('staff.editor.dashboard')->with('success', '新聞已審核！');
+    }
+
     /**
      * Remove the specified resource from storage.
      */

@@ -6,13 +6,19 @@
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-tachometer-alt"></i>
                     </div>
-                    主控台
+                    待審核
                 </a>
                 <a class="nav-link" href="{{ route('staff.editor.dashboard') }}">
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-tachometer-alt"></i>
                     </div>
-                    新聞管理
+                    已上線
+                </a>
+                <a class="nav-link" href="{{ route('staff.editor.dashboard') }}">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    已下架
                 </a>
                 <a class="nav-link" href="{{ route('staff.editor.categories.index') }}">
                     <div class="sb-nav-link-icon">

@@ -7,6 +7,7 @@ use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\ReportersController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\EditorsController; // 確保正確引入 EditorsController
 
 /*
 |--------------------------------------------------------------------------
@@ -55,7 +56,9 @@ Route::prefix('staff')->name('staff.')->group(function () {
 });
 
 Route::prefix('staff/editor')->name('staff.editor.')->middleware('staff.auth')->group(function () {
+    Route::get('dashboard', [EditorsController::class, 'index'])->name('dashboard'); // 確保路由指向正確的控制器
     Route::resource('categories', CategoriesController::class);
+    Route::patch('news/{news}/approve', [NewsController::class, 'approve'])->name('approve'); // 新增審核路由
 });
 
 //濤
