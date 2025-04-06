@@ -14,6 +14,12 @@
                     </div>
                     新聞管理
                 </a>
+                <a class="nav-link" href="{{ route('staff.editor.categories.index') }}">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    類別管理
+                </a>
             </div>
         </div>
         <div class="sb-sidenav-footer">

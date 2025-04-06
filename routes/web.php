@@ -6,6 +6,7 @@ use App\Models\Staff;
 use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\ReportersController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\CategoriesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,10 @@ Route::prefix('staff')->name('staff.')->group(function () {
     Route::patch('reporter/{news}', [NewsController::class, 'update'])->name("reporter.update");
     Route::patch('reporter/{news}/submit', [NewsController::class, 'submit'])->name("reporter.submit");
     Route::delete('reporter/{news}', [NewsController::class, 'destroy'])->name("reporter.destroy");
+});
+
+Route::prefix('staff/editor')->name('staff.editor.')->middleware('staff.auth')->group(function () {
+    Route::resource('categories', CategoriesController::class);
 });
 
 //濤
