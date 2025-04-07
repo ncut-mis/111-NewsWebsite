@@ -45,20 +45,26 @@ Route::group(['middleware' => 'staff.auth'], function() {
         return view('staff.editor.index'); // 主編的主頁面視圖
     })->name('staff.editor.dashboard');
 });
-Route::prefix('staff')->name('staff.')->group(function () {
-    Route::get('reporter', [NewsController::class, 'index'])->name("reporter.index");
-    Route::get('reporter/create', [NewsController::class, 'create'])->name("reporter.create");
-    Route::post('reporter', [NewsController::class, 'store'])->name("reporter.store");
-    Route::get('reporter/{news}/edit', [NewsController::class, 'edit'])->name("reporter.edit");
-    Route::patch('reporter/{news}', [NewsController::class, 'update'])->name("reporter.update");
-    Route::patch('reporter/{news}/submit', [NewsController::class, 'submit'])->name("reporter.submit");
-    Route::delete('reporter/{news}', [NewsController::class, 'destroy'])->name("reporter.destroy");
-});
 
 Route::prefix('staff/editor')->name('staff.editor.')->middleware('staff.auth')->group(function () {
     Route::get('dashboard', [EditorsController::class, 'index'])->name('dashboard'); // 確保路由指向正確的控制器
     Route::resource('categories', CategoriesController::class);
     Route::patch('news/{news}/approve', [NewsController::class, 'approve'])->name('approve'); // 新增審核路由
+});
+
+Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(function () {
+    Route::get('writing', [NewsController::class, 'writing'])->name('writing');
+    Route::get('review', [NewsController::class, 'review'])->name('review');
+    Route::get('published', [NewsController::class, 'published'])->name('published');
+    Route::get('return', [NewsController::class, 'return'])->name('return');
+    Route::get('removed', [NewsController::class, 'removed'])->name('removed');
+    Route::get('/', [NewsController::class, 'index'])->name("index");
+    Route::get('create', [NewsController::class, 'create'])->name("create");
+    Route::post('/', [NewsController::class, 'store'])->name("store");
+    Route::get('{news}/edit', [NewsController::class, 'edit'])->name("edit");
+    Route::patch('{news}', [NewsController::class, 'update'])->name("update");
+    Route::patch('{news}/submit', [NewsController::class, 'submit'])->name("submit");
+    Route::delete('{news}', [NewsController::class, 'destroy'])->name("destroy");
 });
 
 //濤

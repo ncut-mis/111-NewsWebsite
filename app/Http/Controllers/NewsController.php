@@ -53,7 +53,7 @@ class NewsController extends Controller
         }
         News::create($data);
 
-        return redirect()->route('staff.reporter.index');
+        return redirect()->route('staff.reporter.news.index');
     }
 
     /**
@@ -79,14 +79,14 @@ class NewsController extends Controller
     {
         $news->update($request->all());
         
-        return redirect()->route('staff.reporter.index')->with('success', '更新成功！');
+        return redirect()->route('staff.reporter.news.index')->with('success', '更新成功！');
     }
 
     public function submit(Request $request, News $news) // 確保這裡的參數是正確的
     {
         $news->update($request->all());
 
-        return redirect()->route('staff.reporter.index',['news' => $news]);
+        return redirect()->route('staff.reporter.news.index',['news' => $news]);
     }
 
     public function approve(News $news)
@@ -102,6 +102,36 @@ class NewsController extends Controller
     {
         $news->delete();
 
-        return redirect()->route('staff.reporter.index')->with('success', '刪除成功！');;
+        return redirect()->route('staff.reporter.news.index')->with('success', '刪除成功！');;
+    }
+
+    public function writing()
+    {
+        $news = News::where('status', 0)->get();
+        return view('staff.reporter.writing', ['news' => $news]);
+    }
+
+    public function review()
+    {
+        $news = News::where('status', 1)->get();
+        return view('staff.reporter.review', ['news' => $news]);
+    }
+
+    public function published()
+    {
+        $news = News::where('status', 2)->get();
+        return view('staff.reporter.published', ['news' => $news]);
+    }
+
+    public function return()
+    {
+        $news = News::where('status', 3)->get();
+        return view('staff.reporter.return', ['news' => $news]);
+    }
+
+    public function removed()
+    {
+        $news = News::where('status', 4)->get();
+        return view('staff.reporter.removed', ['news' => $news]);
     }
 }

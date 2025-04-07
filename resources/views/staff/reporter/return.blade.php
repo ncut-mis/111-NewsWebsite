@@ -6,7 +6,7 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">新聞管理</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">全部新聞</li>
+        <li class="breadcrumb-item active">被退回</li>
     </ol>
     <table class="table">
         <thead>
@@ -14,25 +14,22 @@
             <th scope="col">#</th>
             <th scope="col">標題</th>
             <th scope="col">狀態</th>
+            <th scope="col">功能</th>
         </tr>
         </thead>
         <tbody>
         @foreach($news as $new)
             <tr>
-                <th scope="row" style="width: 50px">{{ $new->id }}</th>
+                <th scope="row">{{ $new->id }}</th>
                 <td>{{ $new->title }}</td>
+                <td>被退回</td>
                 <td>
-                    @if($new->status == 0)
-                        撰稿中
-                    @elseif($new->status == 1)
-                        待審核
-                    @elseif($new->status == 2)
-                        已上線
-                    @elseif($new->status == 3)
-                        被退回
-                    @elseif($new->status == 4)
-                        已下架
-                    @endif
+                    <a class="btn btn-primary btn-sm" href="{{ route('staff.reporter.news.edit', $new->id) }}">編輯</a>
+                    <form action="{{ route('staff.reporter.news.destroy', $new->id) }}" method="post" style="display: inline-block">
+                        @method('delete')
+                        @csrf
+                        <button type="submit" class="btn btn-danger btn-sm">刪除</button>
+                    </form>
                 </td>
             </tr>
         @endforeach

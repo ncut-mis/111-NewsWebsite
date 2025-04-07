@@ -8,29 +8,35 @@
                     </div>
                     主控台
                 </a>
-                <a class="nav-link" href="{{ route('staff.reporter.index', ['status' => 0]) }}">
+                <a class="nav-link" href="{{ route('staff.reporter.news.writing') }}">
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-edit"></i>
                     </div>
                     撰稿中
                 </a>
-                <a class="nav-link" href="{{ route('staff.reporter.index', ['status' => 1]) }}">
+                <a class="nav-link" href="{{ route('staff.reporter.news.review') }}">
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-clock"></i>
                     </div>
                     待審核
                 </a>
-                <a class="nav-link" href="{{ route('staff.reporter.index', ['status' => 2]) }}">
+                <a class="nav-link" href="{{ route('staff.reporter.news.published') }}">
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-check"></i>
                     </div>
                     已上線
                 </a>
-                <a class="nav-link" href="{{ route('staff.reporter.index', ['status' => 3]) }}">
+                <a class="nav-link" href="{{ route('staff.reporter.news.return') }}">
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-times"></i>
                     </div>
                     被退回
+                </a>
+                <a class="nav-link" href="{{ route('staff.reporter.news.removed') }}">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-archive"></i>
+                    </div>
+                    已下架
                 </a>
             </div>
         </div>

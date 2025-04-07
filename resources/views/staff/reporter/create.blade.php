@@ -11,7 +11,7 @@
 
     <!-- 標題輸入區 -->
     <div class="mb-4 p-3 border rounded bg-light">
-        <form action="{{ route('staff.reporter.store') }}" method="post">
+        <form action="{{ route('staff.reporter.news.store') }}" method="post">
             @method('post')
             @csrf
             <div class="mb-3">

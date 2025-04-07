@@ -11,7 +11,7 @@
 
     <!-- 標題輸入區 -->
     <div class="mb-4 p-3 border rounded bg-light">
-        <form action="{{ route('staff.reporter.update', $news->id) }}" method="post">
+        <form action="{{ route('staff.reporter.news.update', $news->id) }}" method="post">
             @method('patch')
             @csrf
             <div class="mb-3">
@@ -63,12 +63,12 @@
 
     <!-- 儲存與提交按鈕 -->
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-        <form action="{{ route('staff.reporter.update', $news->id) }}" method="post" class="me-2">
+        <form action="{{ route('staff.reporter.news.update', $news->id) }}" method="post" class="me-2">
             @method('patch')
             @csrf
             <button type="submit" class="btn btn-primary btn-sm">儲存</button>
         </form>
-        <form action="{{ route('staff.reporter.submit', $news->id)}}" method="post">
+        <form action="{{ route('staff.reporter.news.submit', $news->id)}}" method="post">
             @method('patch')
             @csrf
             <button type="submit" class="btn btn-success btn-sm">提交</button>
