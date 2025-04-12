@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatecategoriesRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
+
 class CategoriesController extends Controller
 {
     /**
@@ -15,6 +16,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
+
+
         $categories = Category::all();
         return view('staff.editor.Category.index', compact('categories'));
     }
@@ -70,5 +73,16 @@ class CategoriesController extends Controller
     {
         $category->delete();
         return redirect()->route('staff.editor.categories.index')->with('success', '類別刪除成功');
+    }
+    public function dashboard(Request $request)
+    {
+        $categories = Category::all();
+        $news = collect(); // 空集合，預設為空
+
+        if ($request->has('category_id')) {
+            $news = \App\Models\News::where('category_id', $request->category_id)->get();
+        }
+
+        return view('dashboard', compact('categories', 'news'));
     }
 }
