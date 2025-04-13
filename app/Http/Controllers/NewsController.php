@@ -200,4 +200,13 @@ class NewsController extends Controller
 
         return redirect()->route('staff.reporter.news.writing')->with('success', '標題與類別已儲存！');
     }
+
+    public function submit($id)
+    {
+        $news = News::findOrFail($id);
+        $news->status = 1;
+        $news->save();
+
+        return redirect()->route('staff.reporter.news.review')->with('success', '新聞已提交');
+    }
 }

@@ -6,15 +6,27 @@
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-tachometer-alt"></i>
                     </div>
+                    主控台
+                </a>
+                <a class="nav-link" href="{{ route('staff.editor.review') }}">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
                     待審核
                 </a>
-                <a class="nav-link" href="{{ route('staff.editor.dashboard') }}">
+                <a class="nav-link" href="{{ route('staff.editor.published') }}">
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-tachometer-alt"></i>
                     </div>
                     已上線
                 </a>
-                <a class="nav-link" href="{{ route('staff.editor.dashboard') }}">
+                <a class="nav-link" href="{{ route('staff.editor.return1') }}">
+                    <div class="sb-nav-link-icon">
+                        <i class="fas fa-times"></i>
+                    </div>
+                    已退回
+                </a>
+                <a class="nav-link" href="{{ route('staff.editor.removed') }}">
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-tachometer-alt"></i>
                     </div>

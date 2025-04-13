@@ -54,6 +54,13 @@ Route::prefix('staff/editor')->name('staff.editor.')->middleware('staff.auth')->
     Route::get('dashboard', [EditorsController::class, 'index'])->name('dashboard'); // 確保路由指向正確的控制器
     Route::resource('categories', CategoriesController::class);
     Route::patch('news/{news}/approve', [NewsController::class, 'approve'])->name('approve'); // 新增審核路由
+    Route::patch('news/{news}/unpublish', [EditorsController::class, 'unpublish'])->name('unpublish');
+    Route::get('review', [EditorsController::class, 'review'])->name('review');
+    Route::get('published', [EditorsController::class, 'published'])->name('published');
+    Route::get('return', [EditorsController::class, 'return1'])->name('return1');
+    Route::get('removed', [EditorsController::class, 'removed'])->name('removed');
+    Route::patch('news/{news}/republish', [EditorsController::class, 'republish'])->name('republish');
+    Route::patch('news/{news}/return', [EditorsController::class, 'return'])->name('return');
 });
 
 Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(function () {
@@ -75,6 +82,7 @@ Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(functi
     Route::delete('content/{id}', [ImageTextParagraphsController::class, 'destroy'])->name('imageTextParagraphs.destroy');
     Route::post('content/update-order', [ImageTextParagraphsController::class, 'updateOrder'])->name('imageTextParagraphs.updateOrder');
     Route::patch('content/{id}', [ImageTextParagraphsController::class, 'update'])->name('imageTextParagraphs.update');
+    Route::patch('{news}/submit', [NewsController::class, 'submit'])->name('submit');
 });
 
 Route::post('/favorite', [NewsController::class, 'addFavorite'])->middleware('auth')->name('favorite.add');

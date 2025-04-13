@@ -6,37 +6,37 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">新聞管理</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">代審核新聞</li>
+        <li class="breadcrumb-item active">全部新聞</li>
     </ol>
-    <!-- Main Content -->
     <table class="table">
         <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">標題</th>
-            <th scope="col">功能</th>
+            <th scope="col">狀態</th>
         </tr>
         </thead>
         <tbody>
-        @if(isset($news) && $news->count() > 0)
-            @foreach($news as $item)
+        @php $counter = 1; @endphp
+        @foreach($news as $new)
+            @if($new->status != 0)
                 <tr>
-                    <th scope="row" style="width: 50px">{{ $loop->iteration }}</th>
-                    <td>{{ $item->title }}</td>
-                    <td style="width: 150px">
-                        <form action="{{ route('staff.editor.approve', $item->id) }}" method="POST" style="display: inline-block">
-                            @csrf
-                            @method('PATCH')
-                            <button type="submit" class="btn btn-success btn-sm">審核</button>
-                        </form>
+                    <th scope="row" style="width: 50px">{{ $counter++ }}</th>
+                    <td>{{ $new->title }}</td>
+                    <td>
+                        @if($new->status == 1)
+                            待審核
+                        @elseif($new->status == 2)
+                            已上線
+                        @elseif($new->status == 3)
+                            已退回
+                        @elseif($new->status == 4)
+                            已下架
+                        @endif
                     </td>
                 </tr>
-            @endforeach
-        @else
-            <tr>
-                <td colspan="3" class="text-center">目前沒有狀態為 1 的新聞。</td>
-            </tr>
-        @endif
+            @endif
+        @endforeach
         </tbody>
     </table>
 </div>

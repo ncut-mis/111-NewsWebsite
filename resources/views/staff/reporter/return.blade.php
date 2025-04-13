@@ -26,6 +26,11 @@
                 <td>
                     <a class="btn btn-primary btn-sm" href="{{ route('staff.reporter.news.edit', $new->id) }}">編輯</a>
                     <a class="btn btn-info btn-sm" href="{{ route('staff.reporter.news.content', $new->id) }}">內容</a>
+                    <form action="{{ route('staff.reporter.news.submit', $new->id) }}" method="post" style="display: inline-block">
+                        @method('patch')
+                        @csrf
+                        <button type="submit" class="btn btn-warning btn-sm">提交</button>
+                    </form>
                     <form action="{{ route('staff.reporter.news.destroy', $new->id) }}" method="post" style="display: inline-block">
                         @method('delete')
                         @csrf
