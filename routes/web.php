@@ -9,6 +9,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\EditorsController; 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImageTextParagraphsController; // 確保已正確引入控制器
 
 
 /*
@@ -62,12 +63,18 @@ Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(functi
     Route::get('return', [NewsController::class, 'return'])->name('return');
     Route::get('removed', [NewsController::class, 'removed'])->name('removed');
     Route::get('/', [NewsController::class, 'index'])->name("index");
-    Route::get('create', [NewsController::class, 'create'])->name("create");
+    Route::get('create/{news_id?}', [NewsController::class, 'create'])->name("create"); // 支援 news_id 傳遞
     Route::post('/', [NewsController::class, 'store'])->name("store");
     Route::get('{news}/edit', [NewsController::class, 'edit'])->name("edit");
     Route::patch('{news}', [NewsController::class, 'update'])->name("update");
-    Route::patch('{news}/submit', [NewsController::class, 'submit'])->name("submit");
     Route::delete('{news}', [NewsController::class, 'destroy'])->name("destroy");
+    Route::post('save-title-category', [NewsController::class, 'saveTitleCategory'])->name('saveTitleCategory');
+    Route::get('{news}/content', [ImageTextParagraphsController::class, 'index'])->name("content");
+    Route::patch('{news}/content', [ImageTextParagraphsController::class, 'update'])->name('imageTextParagraphs.update'); // 修正路由名稱
+    Route::post('content/store', [ImageTextParagraphsController::class, 'store'])->name('imageTextParagraphs.store');
+    Route::delete('content/{id}', [ImageTextParagraphsController::class, 'destroy'])->name('imageTextParagraphs.destroy');
+    Route::post('content/update-order', [ImageTextParagraphsController::class, 'updateOrder'])->name('imageTextParagraphs.updateOrder');
+    Route::patch('content/{id}', [ImageTextParagraphsController::class, 'update'])->name('imageTextParagraphs.update');
 });
 
 Route::post('/favorite', [NewsController::class, 'addFavorite'])->middleware('auth')->name('favorite.add');

@@ -70,7 +70,8 @@ class NewsController extends Controller
      */
     public function edit(News $news) // 確保這裡的參數是正確的
     {
-        return view('staff.reporter.edit', ['news' => $news]);
+        $categories = Category::all(); // 取得所有類別
+        return view('staff.reporter.edit', ['news' => $news, 'categories' => $categories]);
     }
 
     /**
@@ -78,16 +79,17 @@ class NewsController extends Controller
      */
     public function update(Request $request, News $news) // 確保這裡的參數是正確的
     {
-        $news->update($request->all());
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'category' => 'required|integer|exists:categories,id',
+        ]);
 
-        return redirect()->route('staff.reporter.news.index')->with('success', '更新成功！');
-    }
+        $news->update([
+            'title' => $validated['title'],
+            'category_id' => $validated['category'],
+        ]);
 
-    public function submit(Request $request, News $news) // 確保這裡的參數是正確的
-    {
-        $news->update($request->all());
-
-        return redirect()->route('staff.reporter.news.index',['news' => $news]);
+        return redirect()->route('staff.reporter.news.writing')->with('success', '更新成功！');
     }
 
     public function approve(News $news)
@@ -103,7 +105,7 @@ class NewsController extends Controller
     {
         $news->delete();
 
-        return redirect()->route('staff.reporter.news.index')->with('success', '刪除成功！');;
+        return redirect()->route('staff.reporter.news.writing')->with('success', '刪除成功！');;
     }
 
     public function writing()
@@ -179,5 +181,23 @@ class NewsController extends Controller
             ->get();
 
         return view('favorites', compact('favorites'));
+    }
+
+    public function saveTitleCategory(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'category' => 'required|integer|exists:categories,id',
+        ]);
+
+        News::create([
+            'title' => $validated['title'],
+            'category_id' => $validated['category'],
+            'reporter_id' => 1, // 預設為 1
+            'editor_id' => 1, // 預設為 1
+            'status' => 0,
+        ]);
+
+        return redirect()->route('staff.reporter.news.writing')->with('success', '標題與類別已儲存！');
     }
 }
