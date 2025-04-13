@@ -24,9 +24,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+//Route::get('/dashboard', function () {
+//    return view('dashboard');
+//})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [CategoriesController::class, 'dashboard'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -67,6 +70,8 @@ Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(functi
     Route::delete('{news}', [NewsController::class, 'destroy'])->name("destroy");
 });
 
+Route::post('/favorite', [NewsController::class, 'addFavorite'])->middleware('auth')->name('favorite.add');
+Route::get('/favorites', [NewsController::class, 'favoriteList'])->middleware('auth')->name('favorites.index');
 //濤
 Route::get('/my-page',function(){
     return view('welcome');

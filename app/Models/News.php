@@ -50,4 +50,11 @@ class News extends Model
     {
         return $this->hasMany(ImageTextParagraph::class)->ordered();
     }
+
+
+    public function dashboard(){
+        $news= News::orderBy('create_at','DESC')->get();
+        $data=['news'=>$news];
+        return view('dashboard',$data);
+    }
 }
