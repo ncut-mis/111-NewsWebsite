@@ -7,7 +7,9 @@ use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\ReportersController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoriesController;
-use App\Http\Controllers\EditorsController; // 確保正確引入 EditorsController
+use App\Http\Controllers\EditorsController; 
+use App\Http\Controllers\HomeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +22,7 @@ use App\Http\Controllers\EditorsController; // 確保正確引入 EditorsControl
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 //Route::get('/dashboard', function () {
 //    return view('dashboard');
