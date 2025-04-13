@@ -19,7 +19,7 @@
         <tbody>
             @foreach($categories as $category)
             <tr>
-                <td>{{ $category->id }}</td>
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $category->name }}</td>
                 <td>
                     <a href="{{ route('staff.editor.categories.edit', $category) }}" class="btn btn-warning btn-sm">編輯</a>

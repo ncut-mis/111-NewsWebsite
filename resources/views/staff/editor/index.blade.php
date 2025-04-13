@@ -21,7 +21,7 @@
         @if(isset($news) && $news->count() > 0)
             @foreach($news as $item)
                 <tr>
-                    <th scope="row" style="width: 50px">{{ $item->id }}</th>
+                    <th scope="row" style="width: 50px">{{ $loop->iteration }}</th>
                     <td>{{ $item->title }}</td>
                     <td style="width: 150px">
                         <form action="{{ route('staff.editor.approve', $item->id) }}" method="POST" style="display: inline-block">

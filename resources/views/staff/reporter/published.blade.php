@@ -19,7 +19,7 @@
         <tbody>
         @foreach($news as $new)
             <tr>
-                <th scope="row">{{ $new->id }}</th>
+                <th scope="row">{{ $loop->iteration }}</th>
                 <td>{{ $new->title }}</td>
                 <td>已上線</td>
             </tr>

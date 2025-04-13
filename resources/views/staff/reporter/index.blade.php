@@ -19,7 +19,7 @@
         <tbody>
         @foreach($news as $new)
             <tr>
-                <th scope="row" style="width: 50px">{{ $new->id }}</th>
+                <th scope="row" style="width: 50px">{{ $loop->iteration }}</th>
                 <td>{{ $new->title }}</td>
                 <td>
                     @if($new->status == 0)
