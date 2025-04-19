@@ -19,6 +19,18 @@
             {{ session('error') }}
         </div>
     @endif
+    <!-- 分類選單區塊 -->
+    <div class="bg-gray-100 py-4">
+        <div class="max-w-7xl mx-auto px-4 flex flex-wrap gap-4">
+            @foreach($categories as $category)
+                <a href="{{ route('dashboard', ['category_id' => $category->id]) }}"
+                   class="px-4 py-2 rounded-md text-gray-700 hover:bg-blue-500 hover:text-white transition
+               {{ request('category_id') == $category->id ? 'bg-blue-500 text-white' : 'bg-white border border-gray-300' }}">
+                    {{ $category->name }}
+                </a>
+            @endforeach
+        </div>
+    </div>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

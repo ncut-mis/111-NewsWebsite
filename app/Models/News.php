@@ -57,4 +57,8 @@ class News extends Model
         $data=['news'=>$news];
         return view('dashboard',$data);
     }
+    public function imageParagraph()
+    {
+        return $this->hasOne(ImageTextParagraph::class)->where('order', 1);
+    }
 }
