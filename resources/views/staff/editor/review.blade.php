@@ -6,7 +6,7 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">新聞管理</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">代審核新聞</li>
+        <li class="breadcrumb-item active">代審核</li>
     </ol>
     <!-- Main Content -->
     <table class="table">
@@ -29,7 +29,7 @@
                         <form action="{{ route('staff.editor.approve', $item->id) }}" method="POST" style="display: inline-block">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="btn btn-success btn-sm">審核</button>
+                            <button type="submit" class="btn btn-success btn-sm">通過</button>
                         </form>
                         <form action="{{ route('staff.editor.return', $item->id) }}" method="POST" style="display: inline-block">
                             @csrf

@@ -9,7 +9,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\EditorsController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ImageTextParagraphsController; // 確保已正確引入控制器
+use App\Http\Controllers\ImageTextParagraphsController;
 
 
 /*

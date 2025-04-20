@@ -1,6 +1,6 @@
 @extends('staff.reporter.layouts.master')
 
-@section('page-title', 'Create article')
+@section('page-title', '新增新聞')
 
 @section('page-content')
 <div class="container-fluid px-4">
