@@ -23,7 +23,19 @@
                         @foreach($favorites as $favorite)
                             <tr>
                                 <td class="py-2 px-4 border-b">{{ $loop->iteration }}</td>
-                                <td class="py-2 px-4 border-b">{{ $favorite->news->title }}</td>
+                                <td class="py-2 px-4 border-b">
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        @if($favorite->news->imageParagraph && $favorite->news->imageParagraph->content)
+                                            <img src="{{ $favorite->news->imageParagraph->content }}" alt="新聞圖片"
+                                                 style="width: 120px; height: 120px; object-fit: cover; border-radius: 5px;">
+                                        @endif
+                                        <a href="{{ route('show.new', ['id' => $favorite->news->id]) }}"
+                                           target="_blank"
+                                           style="color: #1D4ED8; text-decoration: none; font-size: 1.25rem; font-weight: bold;">
+                                            {{ $favorite->news->title }}
+                                        </a>
+                                    </div>
+                                </td>
                                 <td class="py-2 px-4 border-b">
                                     {{ optional($favorite->news->created_at)->format('Y-m-d') ?? '無日期' }}
                                 </td>
@@ -36,4 +48,3 @@
         </div>
     </div>
 </x-app-layout>
-
