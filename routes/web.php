@@ -7,7 +7,7 @@ use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\ReportersController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoriesController;
-use App\Http\Controllers\EditorsController; 
+use App\Http\Controllers\EditorsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageTextParagraphsController;
 
@@ -24,7 +24,7 @@ use App\Http\Controllers\ImageTextParagraphsController;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
-
+Route::get('/news/{id}', [HomeController::class, 'show'])->name('show.new');
 //Route::get('/dashboard', function () {
 //    return view('dashboard');
 //})->middleware(['auth', 'verified'])->name('dashboard');

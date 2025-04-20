@@ -9,10 +9,14 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 @if (Route::has('login'))
                     @auth
+                        <li class="nav-item">
+                            <a href="{{ route('favorites.index') }}" class="btn btn-outline-light me-3">收藏列表</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ Auth::user()->name }}
                             </a>
+
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="{{ url('/dashboard') }}">Dashboard</a></li>
                                 <li>
