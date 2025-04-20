@@ -85,8 +85,9 @@ Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(functi
     Route::patch('{news}/submit', [NewsController::class, 'submit'])->name('submit');
 });
 
-Route::post('/favorite', [NewsController::class, 'addFavorite'])->middleware('auth')->name('favorite.add');
-Route::get('/favorites', [NewsController::class, 'favoriteList'])->middleware('auth')->name('favorites.index');
+Route::post('/favorite', [\App\Http\Controllers\FavoritesController::class, 'addFavorite'])->middleware('auth')->name('favorite.add');
+Route::get('/favorites', [\App\Http\Controllers\FavoritesController::class, 'favoriteList'])->middleware('auth')->name('favorites.index');
+Route::post('remove-favorite', [\App\Http\Controllers\FavoritesController::class, 'removeFavorite'])->name('favorite.remove');
 //濤
 Route::get('/my-page',function(){
     return view('welcome');

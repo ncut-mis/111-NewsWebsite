@@ -11,20 +11,20 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
+        $newsQuery = \App\Models\News::with(['imageParagraph'])
+            ->where('status', 2); // ✅ 加上這行只撈 status = 2 的新聞
 
-        $newsQuery = \App\Models\News::with(['imageParagraph']); // 👈 預先載入 imageParagraph 關聯
         if ($request->category_id === 'live') {
             // 如果是「即時」，取 5 小時內的新聞
             $newsQuery->where('created_at', '>=', now()->subHours(5));
-        }else if ($request->has('category_id')) {
+        } else if ($request->has('category_id')) {
             $newsQuery->where('category_id', $request->category_id);
         }
 
-        $news = $newsQuery->with('imageParagraph')->get();
+        $news = $newsQuery->get();
         $categories = \App\Models\Category::all();
 
         return view('home.index', compact('news', 'categories'));
-
     }
     public function show($id)
     {

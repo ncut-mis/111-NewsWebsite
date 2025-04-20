@@ -80,7 +80,10 @@ class CategoriesController extends Controller
         $news = collect(); // 空集合，預設為空
 
         if ($request->has('category_id')) {
-            $news = \App\Models\News::where('category_id', $request->category_id)->get();
+            // 篩選出符合 category_id 且 status = 2 的新聞
+            $news = \App\Models\News::where('category_id', $request->category_id)
+                ->where('status', 2) // 加入 status = 2 的條件
+                ->get();
         }
 
         return view('dashboard', compact('categories', 'news'));

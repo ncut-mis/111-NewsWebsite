@@ -1,4 +1,3 @@
-<!-- resources/views/favorites.blade.php -->
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -17,6 +16,7 @@
                             <th class="py-2 px-4 border-b">編號</th>
                             <th class="py-2 px-4 border-b">標題</th>
                             <th class="py-2 px-4 border-b">日期</th>
+                            <th class="py-2 px-4 border-b">操作</th> <!-- 新增的操作欄位 -->
                         </tr>
                         </thead>
                         <tbody>
@@ -38,6 +38,16 @@
                                 </td>
                                 <td class="py-2 px-4 border-b">
                                     {{ optional($favorite->news->created_at)->format('Y-m-d') ?? '無日期' }}
+                                </td>
+                                <td class="py-2 px-4 border-b">
+                                    <!-- 取消收藏按鈕 -->
+                                    <form action="{{ route('favorite.remove') }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        <input type="hidden" name="news_id" value="{{ $favorite->news->id }}">
+                                        <button type="submit" class="btn btn-danger btn-sm" style="background-color: #dc3545; color: white;">
+                                            取消收藏
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
