@@ -23,7 +23,7 @@ class StaffAuthController extends Controller
             $role = Auth::guard('staff')->user()->role;
 
             if ($role == 0) {
-                return redirect()->route('staff.reporter.dashboard');
+                return redirect()->route('staff.reporter.news.writing');
             } elseif ($role == 1) {
                 return redirect()->route('staff.editor.dashboard');
             }

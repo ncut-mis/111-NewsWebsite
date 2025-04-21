@@ -6,7 +6,7 @@
                     <div class="sb-nav-link-icon">
                         <i class="fas fa-tachometer-alt"></i>
                     </div>
-                    主控台
+                    所有新聞
                 </a>
                 <a class="nav-link" href="{{ route('staff.reporter.news.writing') }}">
                     <div class="sb-nav-link-icon">

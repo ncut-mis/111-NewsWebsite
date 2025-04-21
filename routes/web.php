@@ -84,7 +84,6 @@ Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(functi
     Route::patch('content/{id}', [ImageTextParagraphsController::class, 'update'])->name('imageTextParagraphs.update');
     Route::patch('{news}/submit', [NewsController::class, 'submit'])->name('submit');
 });
-
 Route::post('/favorite', [\App\Http\Controllers\FavoritesController::class, 'addFavorite'])->middleware('auth')->name('favorite.add');
 Route::get('/favorites', [\App\Http\Controllers\FavoritesController::class, 'favoriteList'])->middleware('auth')->name('favorites.index');
 Route::post('remove-favorite', [\App\Http\Controllers\FavoritesController::class, 'removeFavorite'])->name('favorite.remove');
@@ -92,6 +91,10 @@ Route::post('remove-favorite', [\App\Http\Controllers\FavoritesController::class
 Route::get('/my-page',function(){
     return view('welcome');
 });
-
+Route::get('/test-upload', function () {
+    $testPath = 'uploads/images/test.txt';
+    Storage::disk('public')->put($testPath, '測試內容');
+    return Storage::disk('public')->exists($testPath) ? '檔案寫入成功！' : '檔案寫入失敗！';
+});
 require __DIR__.'/auth.php';
 
