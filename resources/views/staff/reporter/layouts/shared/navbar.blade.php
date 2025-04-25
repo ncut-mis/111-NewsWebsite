@@ -45,6 +45,9 @@
     <!-- Navbar-->
     <ul class="navbar-nav ms-auto">
         <li class="nav-item">
+            <span class="nav-link">{{ Auth::guard('staff')->user()->name }}</span>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{{ route('staff.login') }}">登出</a>
         </li>
     </ul>
