@@ -52,7 +52,7 @@
                             <input type="hidden" name="contents[{{ $paragraph->id }}][existing_content]" value="{{ $paragraph->content }}">
                             @if($paragraph->category == 1)
                                 <div class="mt-2">
-                                    <img id="preview-{{ $paragraph->id }}" src="{{ asset($paragraph->content) }}" alt="圖片預覽" style="max-width: 200px; max-height: 200px;">
+                                    <img id="preview-{{ $paragraph->id }}" src="{{ asset('storage/' . $paragraph->content) }}" alt="圖片預覽" style="max-width: 200px; max-height: 200px;">
                                 </div>
                             @endif
                         @endif
@@ -154,24 +154,25 @@
 
     document.querySelectorAll('input[type="file"]').forEach(input => {
         input.addEventListener('change', function () {
-            const id = this.id.split('-')[1];
+            const id = this.id.includes('new') ? this.id.split('-')[2] : this.id.split('-')[1];
             const file = this.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     const preview = document.getElementById(`preview-${id}`);
                     if (preview) {
-                        preview.src = e.target.result; // Update image preview
+                        preview.src = e.target.result; // 更新圖片預覽
+                        preview.style.display = 'block'; // 確保圖片顯示
                     } else {
                         const imgPreview = document.createElement('img');
                         imgPreview.id = `preview-${id}`;
                         imgPreview.src = e.target.result;
-                        imgPreview.alt = 'Image Preview';
+                        imgPreview.alt = '圖片預覽';
                         imgPreview.style = 'max-width: 200px; max-height: 200px;';
                         input.parentNode.appendChild(imgPreview);
                     }
                 };
-                reader.readAsDataURL(file); // Preview image
+                reader.readAsDataURL(file); // 預覽圖片
             }
         });
     });
@@ -228,7 +229,7 @@
                 formData.append('title', title);
                 formData.append('order', order);
 
-                if (contentInput.type === 'file') {
+                if (contentInput.type === 'file' && content) {
                     formData.append('content_file', content);
                 } else {
                     formData.append('content', content);

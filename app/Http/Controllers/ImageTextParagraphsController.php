@@ -22,7 +22,7 @@ class ImageTextParagraphsController extends Controller
             'category' => 'required|integer',
             'title' => 'nullable|string',
             'content' => 'required_if:category,0|string',
-            'content_file' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'content_file' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp|max:2048', // 加入 webp 格式
             'order' => 'required|integer',
         ]);
 
@@ -31,23 +31,21 @@ class ImageTextParagraphsController extends Controller
 
             if ($validated['category'] == 1 && $request->hasFile('content_file')) {
                 $file = $request->file('content_file');
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('images'), $filename); // 將圖片移動到 public/images 資料夾
-                $imagePath = 'images/' . $filename; // 儲存圖片路徑
+                $imagePath = $file->store('uploads/images', 'public'); // 儲存到 storage/app/public/uploads/images
             }
 
             $paragraph = ImageTextParagraph::create([
                 'news_id' => $validated['news_id'],
                 'category' => $validated['category'],
                 'title' => $validated['title'],
-                'content' => $imagePath ?? $validated['content'],
+                'content' => $imagePath ?? $validated['content'], // 儲存圖片路徑或文字內容
                 'order' => $validated['order'],
             ]);
 
             return response()->json([
                 'success' => true,
                 'id' => $paragraph->id,
-                'url' => $imagePath ? asset($imagePath) : null,
+                'url' => $imagePath ? asset('storage/' . $imagePath) : null, // 生成完整 URL
             ]);
         } catch (\Exception $e) {
             \Log::error('儲存失敗: ' . $e->getMessage());
@@ -59,20 +57,20 @@ class ImageTextParagraphsController extends Controller
     {
         $validated = $request->validate([
             'title' => 'nullable|string',
-            'content' => 'nullable|string', // 修改為 nullable
-            'content_file' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048', // 修改為 nullable
+            'content' => 'nullable|string',
+            'content_file' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         try {
             $paragraph = ImageTextParagraph::findOrFail($id);
 
             if ($request->hasFile('content_file')) {
-                // Delete the old file if it exists
+                // 刪除舊檔案
                 if ($paragraph->content && Storage::disk('public')->exists($paragraph->content)) {
                     Storage::disk('public')->delete($paragraph->content);
                 }
 
-                // Save the new file
+                // 儲存新檔案
                 $path = $request->file('content_file')->store('uploads/images', 'public');
                 $validated['content'] = $path;
             }
@@ -81,7 +79,7 @@ class ImageTextParagraphsController extends Controller
 
             return response()->json(['success' => true, 'url' => isset($path) ? asset('storage/' . $path) : null]);
         } catch (\Exception $e) {
-            \Log::error('Image update failed: ' . $e->getMessage());
+            \Log::error('更新失敗: ' . $e->getMessage());
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }

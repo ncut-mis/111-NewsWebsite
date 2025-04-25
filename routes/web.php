@@ -92,9 +92,22 @@ Route::get('/my-page',function(){
     return view('welcome');
 });
 Route::get('/test-upload', function () {
-    $testPath = 'uploads/images/test.txt';
-    Storage::disk('public')->put($testPath, '測試內容');
-    return Storage::disk('public')->exists($testPath) ? '檔案寫入成功！' : '檔案寫入失敗！';
+    try {
+        $testPath = 'uploads/images/test.txt';
+        Storage::disk('public')->put($testPath, '測試內容');
+        if (Storage::disk('public')->exists($testPath)) {
+            return response()->json([
+                'success' => true,
+                'message' => '檔案寫入成功！',
+                'url' => asset('storage/' . $testPath),
+            ]);
+        } else {
+            return response()->json(['success' => false, 'message' => '檔案寫入失敗！']);
+        }
+    } catch (\Exception $e) {
+        \Log::error('測試失敗: ' . $e->getMessage());
+        return response()->json(['success' => false, 'message' => '測試失敗: ' . $e->getMessage()]);
+    }
 });
 require __DIR__.'/auth.php';
 
