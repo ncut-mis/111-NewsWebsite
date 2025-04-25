@@ -41,7 +41,7 @@
             @endforeach
         @else
             <tr>
-                <td colspan="3" class="text-center">目前沒有狀態為 1 的新聞。</td>
+                <td colspan="3" class="text-center">無須審核新聞。</td>
             </tr>
         @endif
         </tbody>

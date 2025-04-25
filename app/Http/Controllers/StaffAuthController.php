@@ -25,7 +25,7 @@ class StaffAuthController extends Controller
             if ($role == 0) {
                 return redirect()->route('staff.reporter.news.writing');
             } elseif ($role == 1) {
-                return redirect()->route('staff.editor.dashboard');
+                return redirect()->route('staff.editor.review');
             }
         }
 
