@@ -58,7 +58,7 @@ class ImageTextParagraphsController extends Controller
         $validated = $request->validate([
             'title' => 'nullable|string',
             'content' => 'nullable|string',
-            'content_file' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'content_file' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp|max:2048', // 加入 webp 格式
         ]);
 
         try {
@@ -75,7 +75,10 @@ class ImageTextParagraphsController extends Controller
                 $validated['content'] = $path;
             }
 
-            $paragraph->update($validated);
+            $paragraph->update([
+                'title' => $validated['title'],
+                'content' => $validated['content'] ?? $paragraph->content, // 保留舊內容
+            ]);
 
             return response()->json(['success' => true, 'url' => isset($path) ? asset('storage/' . $path) : null]);
         } catch (\Exception $e) {

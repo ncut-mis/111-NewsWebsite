@@ -76,8 +76,10 @@
     <div class="p-3 border rounded bg-white">
         <h5 class="mb-3">新增的段落</h5>
 
+        <div id="new-content-container"></div>
+
         <!-- 新增按鈕 -->
-        <div class="mb-3">
+        <div class="mb-3 mt-3">
             <button class="btn btn-secondary btn-sm" id="add-content-btn">新增內容</button>
             <div id="content-options" class="mt-2" style="display: none;">
                 <button class="btn btn-outline-primary btn-sm" data-category="0">新增文字</button>
@@ -85,8 +87,6 @@
                 <button class="btn btn-outline-success btn-sm" data-category="2">新增影片</button>
             </div>
         </div>
-
-        <div id="new-content-container"></div>
     </div>
 </div>
 
@@ -282,28 +282,36 @@
                 const id = this.getAttribute('data-id');
                 const item = document.getElementById(`content-item-${id}`);
                 const title = item.querySelector(`input[name="contents[${id}][title]"]`)?.value || null;
-                const content = item.querySelector(`textarea[name="contents[${id}][content]"], input[name="contents[${id}][content]"]`).value;
+                const contentInput = item.querySelector(`textarea[name="contents[${id}][content]"], input[name="contents[${id}][content_file]"]`);
+                const content = contentInput.type === 'file' ? contentInput.files[0] : contentInput.value;
 
-                fetch(`{{ route('staff.reporter.news.imageTextParagraphs.update', '') }}/${id}`, { // 確保正確傳遞 id
-                    method: 'PATCH',
+                const formData = new FormData();
+                formData.append('_method', 'PATCH'); // 明確指定 PATCH 方法
+                formData.append('title', title);
+                if (contentInput.type === 'file' && content) {
+                    formData.append('content_file', content);
+                } else {
+                    formData.append('content', content);
+                }
+
+                fetch(`{{ route('staff.reporter.news.imageTextParagraphs.update', '') }}/${id}`, {
+                    method: 'POST', // 使用 POST 方法來模擬 PATCH
                     headers: {
-                        'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
-                    body: JSON.stringify({
-                        title,
-                        content
-                    })
+                    body: formData
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         alert('內容已成功更新！');
+                        if (data.url) {
+                            const preview = document.getElementById(`preview-${id}`);
+                            if (preview) {
+                                preview.src = data.url; // 更新圖片預覽
+                                preview.style.display = 'block'; // 確保圖片顯示
+                            }
+                        }
                     } else {
                         alert('更新失敗，請稍後再試。');
                         console.error('後端回傳錯誤:', data);
