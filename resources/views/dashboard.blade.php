@@ -59,17 +59,12 @@
                                     </div>
                                     <h2 class="fs-4 fw-bold">
                                         <a href="{{ route('show.new', ['id' => $item->id]) }}"
-                                           class="text-decoration-none text-dark" target="_blank">
+                                           class="text-decoration-none text-dark" >
                                             {{ $item->title }}
                                         </a>
                                     </h2>
 
-                                    <!-- 收藏按鈕 -->
-                                    <form action="{{ route('favorite.add') }}" method="POST" class="mt-2">
-                                        @csrf
-                                        <input type="hidden" name="news_id" value="{{ $item->id }}">
-                                        <button type="submit" class="btn btn-sm btn-outline-primary">加入收藏</button>
-                                    </form>
+
                                 </div>
                             </div>
                         </div>

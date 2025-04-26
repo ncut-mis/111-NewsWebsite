@@ -21,7 +21,11 @@ class HomeController extends Controller
             $newsQuery->where('created_at', '>=', now()->subHours(5));
         } else if ($request->has('category_id')) {
             $newsQuery->where('category_id', $request->category_id);
+        }else {
+            // ✅ 沒有選分類時，預設為即時新聞
+            $newsQuery->where('created_at', '>=', now()->subHours(5));
         }
+
 
         $news = $newsQuery->get();
         $categories = Category::all();

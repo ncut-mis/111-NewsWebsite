@@ -25,8 +25,10 @@
                     <th scope="row" style="width: 50px">{{ $loop->iteration }}</th>
                     <td>{{ $item->title }}</td>
                     <td>待審核</td>
-                    <td style="width: 150px">
-                        <form action="{{ route('staff.editor.approve', $item->id) }}" method="POST" style="display: inline-block">
+
+                    <td style="width: 220px">
+                        <a href="{{ route('show.new', ['id' => $item->id]) }}" class="btn btn-primary btn-sm me-1">查看</a>
+                        <form action="{{ route('staff.editor.approve', $item->id) }}" method="POST" style="display: inline-block" class="me-1">
                             @csrf
                             @method('PATCH')
                             <button type="submit" class="btn btn-success btn-sm">通過</button>
@@ -36,6 +38,7 @@
                             @method('PATCH')
                             <button type="submit" class="btn btn-danger btn-sm">退回</button>
                         </form>
+
                     </td>
                 </tr>
             @endforeach
