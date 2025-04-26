@@ -60,17 +60,18 @@
 
                 <div class="d-flex gap-2 mt-3">
                     @if(Auth::guard('staff')->check() && Auth::guard('staff')->user()->role == 1)
-                        {{-- 編輯者：staff role==1，返回審核頁 --}}
                         <a href="{{ route('staff.editor.review') }}" class="btn btn-secondary">返回審核頁面</a>
-                    @else
-                        {{-- 訪客或一般會員 --}}
+                    @elseif(Auth::check())
+                        {{-- user 登入 --}}
                         <a href="{{ route('home.index') }}" class="btn btn-secondary">返回首頁</a>
-
                         <form action="{{ route('favorite.add') }}" method="POST">
                             @csrf
                             <input type="hidden" name="news_id" value="{{ $newsItem->id }}">
                             <button type="submit" class="btn btn-outline-primary">加入收藏</button>
                         </form>
+                    @else
+                        {{-- 訪客 --}}
+                        <a href="{{ route('home.index') }}" class="btn btn-secondary">返回首頁</a>
                     @endif
                 </div>
             </div>
