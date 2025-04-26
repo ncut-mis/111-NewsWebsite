@@ -10,17 +10,19 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
     <link href="{{ asset('css/admin-styles.css') }}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            padding-top: 56px; /* 確保主內容不被導覽列遮擋 */
+        }
+    </style>
 </head>
 <body class="sb-nav-fixed">
     @include('staff.editor.layouts.shared.navbar')
-    <div id="layoutSidenav">
-        @include('staff.editor.layouts.shared.sidenav')
-        <div id="layoutSidenav_content">
-            <main>
-                @yield('page-content')
-            </main>
-            @include('staff.editor.layouts.shared.footer')
-        </div>
+    <div id="layoutSidenav_content">
+        <main>
+            @yield('page-content')
+        </main>
+        @include('staff.editor.layouts.shared.footer')
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/admin-scripts.js') }}"></script>

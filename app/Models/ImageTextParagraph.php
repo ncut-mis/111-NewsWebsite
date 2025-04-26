@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ImageTextParagraph extends Model
 {
-    protected $fillable = ['news_id', 'category', 'title', 'content', 'order'];
+    protected $fillable = ['news_id', 'category', 'title', 'content', 'order', 'image_path'];
     public $timestamps = false;
     // 設定與 News 的關聯
     public function news()

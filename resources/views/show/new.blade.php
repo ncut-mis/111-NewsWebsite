@@ -13,7 +13,8 @@
                 <h1>{{ $newsItem->title }}</h1>
 
                 @if($newsItem->imageParagraph && $newsItem->imageParagraph->content)
-                    <img src="{{ $newsItem->imageParagraph->content }}" class="img-fluid rounded mb-4" alt="新聞圖片">
+                    <img src="{{ asset('storage/' . $newsItem->imageParagraph->content) }}" class="img-fluid rounded mb-4" alt="{{ $newsItem->title }}">
+                    <p class="text-muted">{{ $newsItem->imageParagraph->title ?? '' }}</p>
                 @endif
 
                 <p class="lead">{{ $newsItem->content }}</p>
@@ -28,19 +29,13 @@
 
                 <hr class="my-5">
 
-
-
                 @if($relatedParagraphs->isNotEmpty())
                     @foreach($relatedParagraphs as $paragraph)
                         @if ($loop->index > 0)
                             <div class="mb-4">
-
-
-                                @php
-                                    $isUrl = filter_var($paragraph->content, FILTER_VALIDATE_URL);
-                                @endphp
-                                @if($isUrl)
-                                    <img src="{{ $paragraph->content }}" class="img-fluid rounded mb-2" alt="相關圖片">
+                                @if($paragraph->category == 1) <!-- 僅當 category 為 1 時顯示圖片 -->
+                                <img src="{{ asset('storage/' . $paragraph->content) }}" class="img-fluid rounded mb-2" alt="{{ $paragraph->title ?? $newsItem->title }}">
+                                <p class="text-muted">{{ $paragraph->title ?? '' }}</p>
                                 @else
                                     <p>{{ $paragraph->content ?? '' }}</p>
                                 @endif

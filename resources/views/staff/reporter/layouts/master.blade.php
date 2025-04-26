@@ -11,16 +11,13 @@
     <link href="{{ asset('css/admin-styles.css') }}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 </head>
-<body class="sb-nav-fixed">
+<body>
     @include('staff.reporter.layouts.shared.navbar')
-    <div id="layoutSidenav">
-        @include('staff.reporter.layouts.shared.sidenav')
-        <div id="layoutSidenav_content">
-            <main>
-                @yield('page-content')
-            </main>
-            @include('staff.reporter.layouts.shared.footer')
-        </div>
+    <div id="layoutSidenav_content">
+        <main>
+            @yield('page-content')
+        </main>
+        @include('staff.reporter.layouts.shared.footer')
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/admin-scripts.js') }}"></script>

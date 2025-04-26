@@ -43,8 +43,8 @@
                                 <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
                                     <div class="mb-4">
                                         @if($item->imageParagraph && $item->imageParagraph->content)
-                                            <img src="{{ $item->imageParagraph->content }}"
-                                                 class="img-fluid rounded-3 mb-3" alt="新聞圖片">
+                                            <img src="{{ asset('storage/' . $item->imageParagraph->content) }}" 
+                                                 class="img-fluid rounded-3 mb-3" alt="{{ $item->title }}">
                                         @else
                                             <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3">
                                                 <i class="bi bi-newspaper"></i>

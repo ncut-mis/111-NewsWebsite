@@ -25,9 +25,7 @@ use App\Http\Controllers\ImageTextParagraphsController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/news/{id}', [HomeController::class, 'show'])->name('show.new');
-//Route::get('/dashboard', function () {
-//    return view('dashboard');
-//})->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::get('/dashboard', [CategoriesController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -84,7 +82,6 @@ Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(functi
     Route::patch('content/{id}', [ImageTextParagraphsController::class, 'update'])->name('imageTextParagraphs.update');
     Route::patch('{news}/submit', [NewsController::class, 'submit'])->name('submit');
 });
-
 Route::post('/favorite', [\App\Http\Controllers\FavoritesController::class, 'addFavorite'])->middleware('auth')->name('favorite.add');
 Route::get('/favorites', [\App\Http\Controllers\FavoritesController::class, 'favoriteList'])->middleware('auth')->name('favorites.index');
 Route::post('remove-favorite', [\App\Http\Controllers\FavoritesController::class, 'removeFavorite'])->name('favorite.remove');
