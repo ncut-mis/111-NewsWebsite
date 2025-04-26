@@ -6,7 +6,14 @@
 
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="{{ asset('css/home-styles.css') }}" rel="stylesheet"/>
-
+    <style>
+        .fixed-image {
+            width: 100%;
+            height: 200px; /* 或你想要的高度 */
+            object-fit: cover; /* 裁切圖片但保持比例，不變形 */
+            object-position: center; /* 裁切時以中間為基準 */
+        }
+    </style>
 
 @endsection
 
@@ -36,6 +43,7 @@
 
             <!-- Page Features-->
             <div class="row gx-lg-5">
+
                 @if(isset($news) && $news->count() > 0)
                     @foreach($news as $item)
                         <div class="col-lg-6 col-xxl-4 mb-5">
@@ -43,8 +51,8 @@
                                 <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
                                     <div class="mb-4">
                                         @if($item->imageParagraph && $item->imageParagraph->content)
-                                            <img src="{{ asset('storage/' . $item->imageParagraph->content) }}" 
-                                                 class="img-fluid rounded-3 mb-3" alt="{{ $item->title }}">
+                                            <img src="{{ asset('storage/' . $item->imageParagraph->content) }}"
+                                                 class="img-fluid rounded-3 mb-3 fixed-image" alt="{{ $item->title }}">
                                         @else
                                             <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3">
                                                 <i class="bi bi-newspaper"></i>
@@ -57,7 +65,7 @@
                                         </a>
                                     </h2>
 
-                                  <!--  <p class="mb-0">點擊查看詳細內容。</p> -->
+                                    <!--  <p class="mb-0">點擊查看詳細內容。</p> -->
                                 </div>
                             </div>
                         </div>

@@ -46,6 +46,7 @@ Route::group(['middleware' => 'staff.auth'], function() {
     Route::get('staff/editor/dashboard', function () {
         return view('staff.editor.index'); // 主編的主頁面視圖
     })->name('staff.editor.dashboard');
+
 });
 
 Route::prefix('staff/editor')->name('staff.editor.')->middleware('staff.auth')->group(function () {

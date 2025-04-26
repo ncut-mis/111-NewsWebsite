@@ -7,7 +7,6 @@
 @endsection
 
 @section('page-content')
-
     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
@@ -34,23 +33,13 @@
                     @foreach($relatedParagraphs as $paragraph)
                         @if ($loop->index > 0)
                             <div class="mb-4">
-                                @if($paragraph->category == 1) <!-- 圖片 -->
+                                @if($paragraph->category == 1) <!-- 僅當 category 為 1 時顯示圖片 -->
                                 <img src="{{ asset('storage/' . $paragraph->content) }}" class="img-fluid rounded mb-2" alt="{{ $paragraph->title ?? $newsItem->title }}">
                                 <p class="text-muted">{{ $paragraph->title ?? '' }}</p>
-
-                                @elseif($paragraph->category == 2) <!-- 影片 -->
-                                <div class="mb-3">
-                                    <div class="ratio ratio-16x9">
-                                        <iframe src="{{ $paragraph->content }}" frameborder="0" allowfullscreen></iframe>
-                                    </div>
-                                    <p class="text-muted">{{ $paragraph->title ?? '' }}</p>
-                                </div>
-
-                                @else <!-- 文字或其他 -->
-                                <p>{{ $paragraph->content ?? '' }}</p>
+                                @else
+                                    <p>{{ $paragraph->content ?? '' }}</p>
                                 @endif
                                 <p>{{ $paragraph->paragraph_text ?? '' }}</p>
-
                             </div>
                         @endif
                     @endforeach
@@ -59,19 +48,13 @@
                 @endif
 
                 <div class="d-flex gap-2 mt-3">
-                    @if(Auth::guard('staff')->check() && Auth::guard('staff')->user()->role == 1)
-                        {{-- 編輯者：staff role==1，返回審核頁 --}}
-                        <a href="{{ route('staff.editor.review') }}" class="btn btn-secondary">返回審核頁面</a>
-                    @else
-                        {{-- 訪客或一般會員 --}}
-                        <a href="{{ route('home.index') }}" class="btn btn-secondary">返回首頁</a>
+                    <a href="{{ route('home.index') }}" class="btn btn-secondary">返回首頁</a>
 
-                        <form action="{{ route('favorite.add') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="news_id" value="{{ $newsItem->id }}">
-                            <button type="submit" class="btn btn-outline-primary">加入收藏</button>
-                        </form>
-                    @endif
+                    <form action="{{ route('favorite.add') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="news_id" value="{{ $newsItem->id }}">
+                        <button type="submit" class="btn btn-outline-primary">加入收藏</button>
+                    </form>
                 </div>
             </div>
         </div>
