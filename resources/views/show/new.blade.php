@@ -28,7 +28,7 @@
 
                 <hr class="my-5">
 
-                <h2>相關內容</h2>
+
 
                 @if($relatedParagraphs->isNotEmpty())
                     @foreach($relatedParagraphs as $paragraph)
@@ -52,7 +52,15 @@
                     <p>沒有相關內容。</p>
                 @endif
 
-                <a href="{{ route('home.index') }}" class="btn btn-secondary mt-3">返回首頁</a>
+                <div class="d-flex gap-2 mt-3">
+                    <a href="{{ route('home.index') }}" class="btn btn-secondary">返回首頁</a>
+
+                    <form action="{{ route('favorite.add') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="news_id" value="{{ $newsItem->id }}">
+                        <button type="submit" class="btn btn-outline-primary">加入收藏</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Favorite;
-use App\Models\favorites;
 use App\Http\Requests\StorefavoritesRequest;
 use App\Http\Requests\UpdatefavoritesRequest;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class FavoritesController extends Controller
 {
@@ -95,20 +95,22 @@ class FavoritesController extends Controller
 
         return back()->with('success', '成功加入收藏');
     }
+
+
     public function favoriteList()
     {
-        // 確保用戶已經登入
         $userId = auth()->id();
         if (!$userId) {
             return redirect()->route('login')->with('error', '請先登入');
         }
 
-        // 取得用戶收藏的所有新聞
         $favorites = Favorite::where('user_id', $userId)
-            ->with('news')  // 預加載新聞資料
+            ->with(['news.imageParagraph']) // ⚠️ 預加載圖片關聯
             ->get();
 
-        return view('favorites', compact('favorites'));
+        $categories = Category::all(); // 🟢 把分類撈出來
+
+        return view('favorites', compact('favorites', 'categories')); // 傳到 Blade
     }
     public function removeFavorite(Request $request)
     {

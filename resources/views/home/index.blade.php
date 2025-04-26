@@ -52,7 +52,7 @@
                                         @endif
                                     </div>
                                     <h2 class="fs-4 fw-bold">
-                                        <a href="{{ route('show.new', ['id' => $item->id]) }}" class="text-decoration-none text-dark" target="_blank">
+                                        <a href="{{ route('show.new', ['id' => $item->id]) }}" class="text-decoration-none text-dark" >
                                             {{ $item->title }}
                                         </a>
                                     </h2>

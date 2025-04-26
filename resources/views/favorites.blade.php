@@ -1,60 +1,68 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('收藏列表') }}
-        </h2>
-    </x-slot>
+@extends('layouts.master')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <!-- 顯示收藏的新聞 -->
-                    <table class="min-w-full bg-white">
-                        <thead>
-                        <tr>
-                            <th class="py-2 px-4 border-b">編號</th>
-                            <th class="py-2 px-4 border-b">標題</th>
-                            <th class="py-2 px-4 border-b">日期</th>
-                            <th class="py-2 px-4 border-b">操作</th> <!-- 新增的操作欄位 -->
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($favorites as $favorite)
-                            <tr>
-                                <td class="py-2 px-4 border-b">{{ $loop->iteration }}</td>
-                                <td class="py-2 px-4 border-b">
-                                    <div style="display: flex; align-items: center; gap: 1rem;">
-                                        @if($favorite->news->imageParagraph && $favorite->news->imageParagraph->content)
-                                            <img src="{{ $favorite->news->imageParagraph->content }}" alt="新聞圖片"
-                                                 style="width: 120px; height: 120px; object-fit: cover; border-radius: 5px;">
-                                        @endif
-                                        <a href="{{ route('show.new', ['id' => $favorite->news->id]) }}"
-                                           target="_blank"
-                                           style="color: #1D4ED8; text-decoration: none; font-size: 1.25rem; font-weight: bold;">
-                                            {{ $favorite->news->title }}
-                                        </a>
-                                    </div>
-                                </td>
-                                <td class="py-2 px-4 border-b">
-                                    {{ optional($favorite->news->created_at)->format('Y-m-d') ?? '無日期' }}
-                                </td>
-                                <td class="py-2 px-4 border-b">
-                                    <!-- 取消收藏按鈕 -->
-                                    <form action="{{ route('favorite.remove') }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        <input type="hidden" name="news_id" value="{{ $favorite->news->id }}">
-                                        <button type="submit" class="btn btn-danger btn-sm" style="background-color: #dc3545; color: white;">
-                                            取消收藏
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
+@section('page-title', '我的收藏')
+
+@section('page-style')
+    <link href="{{ asset('css/home-styles.css') }}" rel="stylesheet"/>
+@endsection
+
+@section('page-content')
+    <!-- 分類按鈕列 -->
+    <div class="category-bar bg-dark py-2">
+        <div class="mb-4">
+            <div class="d-flex flex-wrap gap-2 justify-content-center">
+                <a href="{{ route('dashboard', ['category_id' => 'live']) }}"
+                   class="btn {{ request('category_id') == 'live' ? 'btn-primary text-white' : 'btn-outline text-white' }}">
+                    即時
+                </a>
+                @foreach($categories as $category)
+                    <a href="{{ route('dashboard', ['category_id' => $category->id]) }}"
+                       class="btn {{ request('category_id') == $category->id ? 'btn-primary text-white' : 'btn-outline text-white' }}">
+                        {{ $category->name }}
+                    </a>
+                @endforeach
             </div>
         </div>
     </div>
-</x-app-layout>
+    <section class="pt-4">
+        <div class="container px-lg-5">
+            <h2 class="text-center mb-4">我的收藏</h2>
+
+            <div class="row gx-lg-5">
+                @forelse($favorites as $favorite)
+                    <div class="col-lg-6 col-xxl-4 mb-5">
+                        <div class="card bg-light border-0 h-100">
+                            <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+                                <div class="mb-4">
+                                    @if($favorite->news->imageParagraph && $favorite->news->imageParagraph->content)
+                                        <img src="{{ $favorite->news->imageParagraph->content }}" class="img-fluid rounded-3 mb-3" alt="新聞圖片">
+                                    @else
+                                        <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3">
+                                            <i class="bi bi-newspaper"></i>
+                                        </div>
+                                    @endif
+                                </div>
+                                <h2 class="fs-4 fw-bold">
+                                    <a href="{{ route('show.new', ['id' => $favorite->news->id]) }}" class="text-decoration-none text-dark">
+                                        {{ $favorite->news->title }}
+                                    </a>
+                                </h2>
+
+                                <p class="text-muted">{{ optional($favorite->news->created_at)->format('Y-m-d') ?? '無日期' }}</p>
+
+                                <!-- 取消收藏按鈕 -->
+                                <form action="{{ route('favorite.remove') }}" method="POST" class="mt-2">
+                                    @csrf
+                                    <input type="hidden" name="news_id" value="{{ $favorite->news->id }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">取消收藏</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-center">你還沒有收藏任何新聞。</p>
+                @endforelse
+            </div>
+        </div>
+    </section>
+@endsection
