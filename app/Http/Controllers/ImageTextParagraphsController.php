@@ -9,12 +9,18 @@ use Illuminate\Support\Facades\Storage;
 
 class ImageTextParagraphsController extends Controller
 {
+    /**
+     * 顯示特定新聞的圖片與文字段落。
+     */
     public function index($newsId)
     {
         $news = News::with('imageTextParagraphs')->findOrFail($newsId);
         return view('staff.reporter.content', compact('news'));
     }
 
+    /**
+     * 儲存新的圖片或文字段落。
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -53,6 +59,9 @@ class ImageTextParagraphsController extends Controller
         }
     }
 
+    /**
+     * 更新特定段落的內容或圖片。
+     */
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
@@ -87,6 +96,9 @@ class ImageTextParagraphsController extends Controller
         }
     }
 
+    /**
+     * 刪除特定段落，並移除相關檔案。
+     */
     public function destroy($id)
     {
         $paragraph = ImageTextParagraph::find($id);
@@ -103,6 +115,9 @@ class ImageTextParagraphsController extends Controller
         return response()->json(['success' => false, 'message' => 'Content not found'], 404);
     }
 
+    /**
+     * 更新段落的排序。
+     */
     public function updateOrder(Request $request)
     {
         $validated = $request->validate([

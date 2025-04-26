@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Editors; // 確保正確引入模型
+use App\Models\Editors;
 use App\Models\News;
 use App\Http\Requests\StoreeditorsRequest;
 use App\Http\Requests\UpdateeditorsRequest;
-use Illuminate\Http\Request; // 確保正確引入 Request 類
+use Illuminate\Http\Request;
 
 class EditorsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 顯示新聞列表，支援根據狀態篩選。
      */
     public function index(Request $request)
     {
@@ -28,7 +28,7 @@ class EditorsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 顯示新增編輯的表單。
      */
     public function create()
     {
@@ -36,7 +36,7 @@ class EditorsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 儲存新的編輯。
      */
     public function store(StoreeditorsRequest $request)
     {
@@ -44,7 +44,7 @@ class EditorsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 顯示特定編輯的詳細內容。
      */
     public function show(editors $editors)
     {
@@ -52,7 +52,7 @@ class EditorsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 顯示編輯的表單。
      */
     public function edit(editors $editors)
     {
@@ -60,7 +60,7 @@ class EditorsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * 更新特定編輯的內容。
      */
     public function update(UpdateeditorsRequest $request, editors $editors)
     {
@@ -68,36 +68,52 @@ class EditorsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 刪除特定編輯。
      */
     public function destroy(editors $editors)
     {
         //
     }
+
+    /**
+     * 顯示待審核的新聞列表。
+     */
     public function review()
     {
         $news = News::where('status', 1)->get();
         return view('staff.editor.review', ['news' => $news]);
     }
 
+    /**
+     * 顯示已發布的新聞列表。
+     */
     public function published()
     {
         $news = News::where('status', 2)->get();
         return view('staff.editor.published', ['news' => $news]);
     }
 
+    /**
+     * 顯示被退回的新聞列表。
+     */
     public function return1()
     {
         $news = News::where('status', 3)->get();
         return view('staff.editor.return', ['news' => $news]);
     }
 
+    /**
+     * 顯示已移除的新聞列表。
+     */
     public function removed()
     {
         $news = News::where('status', 4)->get();
         return view('staff.editor.removed', ['news' => $news]);
     }
 
+    /**
+     * 將新聞重新發布。
+     */
     public function republish($id)
     {
         $news = News::findOrFail($id);
@@ -107,6 +123,9 @@ class EditorsController extends Controller
         return redirect()->route('staff.editor.published')->with('success', '新聞已重新上架');
     }
 
+    /**
+     * 將新聞下架。
+     */
     public function unpublish($id)
     {
         $news = News::findOrFail($id);
@@ -116,6 +135,9 @@ class EditorsController extends Controller
         return redirect()->route('staff.editor.removed')->with('success', '新聞已下架');
     }
 
+    /**
+     * 將新聞退回給記者。
+     */
     public function return($id)
     {
         $news = News::findOrFail($id);
@@ -124,5 +146,4 @@ class EditorsController extends Controller
 
         return redirect()->route('staff.editor.review')->with('success', '新聞已退回');
     }
-    
 }

@@ -8,11 +8,10 @@ use App\Http\Requests\UpdatecategoriesRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
-
 class CategoriesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 顯示所有分類。
      */
     public function index()
     {
@@ -23,7 +22,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 顯示新增分類的表單。
      */
     public function create()
     {
@@ -31,7 +30,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 儲存新的分類。
      */
     public function store(Request $request)
     {
@@ -41,7 +40,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 顯示特定分類的詳細內容。
      */
     public function show(categories $categories)
     {
@@ -49,7 +48,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 顯示編輯分類的表單。
      */
     public function edit(Category $category)
     {
@@ -57,7 +56,7 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * 更新特定分類的內容。
      */
     public function update(Request $request, Category $category)
     {
@@ -67,13 +66,17 @@ class CategoriesController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 刪除特定分類。
      */
     public function destroy(Category $category)
     {
         $category->delete();
         return redirect()->route('staff.editor.categories.index')->with('success', '類別刪除成功');
     }
+
+    /**
+     * 顯示分類與對應的新聞列表，支援篩選。
+     */
     public function dashboard(Request $request)
     {
         $categories = Category::all();

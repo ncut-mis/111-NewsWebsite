@@ -10,7 +10,7 @@ use App\Models\Favorite;
 class NewsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 顯示新聞列表，支援根據狀態篩選。
      */
     public function index(Request $request)
     {
@@ -30,6 +30,9 @@ class NewsController extends Controller
         return view('staff.reporter.index', $data);
     }
 
+    /**
+     * 顯示新增新聞的表單，並載入所有分類。
+     */
     public function create()
     {
         $categories = Category::all(); // 確保這裡的變數是正確的
@@ -37,7 +40,7 @@ class NewsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 儲存新新聞，並設置預設的分類、記者與編輯。
      */
     public function store(Request $request)
     {
@@ -58,26 +61,26 @@ class NewsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 顯示特定新聞的詳細內容。
      */
-    public function show(News $news) // 確保這裡的參數是正確的
+    public function show(News $news)
     {
         //
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 顯示編輯新聞的表單，並載入所有分類。
      */
-    public function edit(News $news) // 確保這裡的參數是正確的
+    public function edit(News $news)
     {
         $categories = Category::all(); // 取得所有類別
         return view('staff.reporter.edit', ['news' => $news, 'categories' => $categories]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * 更新特定新聞的標題與分類。
      */
-    public function update(Request $request, News $news) // 確保這裡的參數是正確的
+    public function update(Request $request, News $news)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -92,6 +95,9 @@ class NewsController extends Controller
         return redirect()->route('staff.reporter.news.writing')->with('success', '更新成功！');
     }
 
+    /**
+     * 審核新聞，將狀態更新為已審核。
+     */
     public function approve(News $news)
     {
         $news->update(['status' => 2]); // 將狀態更新為 2，表示已審核
@@ -99,46 +105,63 @@ class NewsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 刪除特定新聞。
      */
-    public function destroy(News $news) // 確保這裡的參數是正確的
+    public function destroy(News $news)
     {
         $news->delete();
 
         return redirect()->route('staff.reporter.news.writing')->with('success', '刪除成功！');;
     }
 
+    /**
+     * 顯示所有撰寫中的新聞。
+     */
     public function writing()
     {
         $news = News::where('status', 0)->get();
         return view('staff.reporter.writing', ['news' => $news]);
     }
 
+    /**
+     * 顯示所有待審核的新聞。
+     */
     public function review()
     {
         $news = News::where('status', 1)->get();
         return view('staff.reporter.review', ['news' => $news]);
     }
 
+    /**
+     * 顯示所有已發布的新聞。
+     */
     public function published()
     {
         $news = News::where('status', 2)->get();
         return view('staff.reporter.published', ['news' => $news]);
     }
 
+    /**
+     * 顯示所有被退回的新聞。
+     */
     public function return()
     {
         $news = News::where('status', 3)->get();
         return view('staff.reporter.return', ['news' => $news]);
     }
 
+    /**
+     * 顯示所有已移除的新聞。
+     */
     public function removed()
     {
         $news = News::where('status', 4)->get();
         return view('staff.reporter.removed', ['news' => $news]);
     }
 
-
+    /**
+     * 儲存新聞的標題與分類，並設置預設值。
+     */
     public function saveTitleCategory(Request $request)
     {
         $validated = $request->validate([
@@ -157,6 +180,9 @@ class NewsController extends Controller
         return redirect()->route('staff.reporter.news.writing')->with('success', '標題與類別已儲存！');
     }
 
+    /**
+     * 提交新聞以供審核，將狀態更新為待審核。
+     */
     public function submit($id)
     {
         $news = News::findOrFail($id);

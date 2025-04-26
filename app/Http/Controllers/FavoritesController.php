@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class FavoritesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * 顯示收藏列表。
      */
     public function index()
     {
@@ -19,7 +19,7 @@ class FavoritesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 顯示新增收藏的表單。
      */
     public function create()
     {
@@ -27,7 +27,7 @@ class FavoritesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 儲存新的收藏。
      */
     public function store(StorefavoritesRequest $request)
     {
@@ -35,7 +35,7 @@ class FavoritesController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 顯示特定收藏的詳細內容。
      */
     public function show(favorites $favorites)
     {
@@ -43,7 +43,7 @@ class FavoritesController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 顯示編輯收藏的表單。
      */
     public function edit(favorites $favorites)
     {
@@ -51,7 +51,7 @@ class FavoritesController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * 更新特定收藏的內容。
      */
     public function update(UpdatefavoritesRequest $request, favorites $favorites)
     {
@@ -59,12 +59,16 @@ class FavoritesController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 刪除特定收藏。
      */
     public function destroy(favorites $favorites)
     {
         //
     }
+
+    /**
+     * 新增新聞至收藏列表。
+     */
     public function addFavorite(Request $request)
     {
         // 取得當前用戶的 ID
@@ -95,6 +99,10 @@ class FavoritesController extends Controller
 
         return back()->with('success', '成功加入收藏');
     }
+
+    /**
+     * 顯示用戶的收藏列表。
+     */
     public function favoriteList()
     {
         // 確保用戶已經登入
@@ -110,6 +118,10 @@ class FavoritesController extends Controller
 
         return view('favorites', compact('favorites'));
     }
+
+    /**
+     * 從收藏列表中移除新聞。
+     */
     public function removeFavorite(Request $request)
     {
         // 取得當前用戶的 ID
