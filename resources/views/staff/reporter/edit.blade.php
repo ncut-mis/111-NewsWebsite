@@ -173,65 +173,74 @@
 
     document.querySelectorAll('input[type="file"]').forEach(input => {
         input.addEventListener('change', function () {
-            const id = this.id.includes('new') ? this.id.split('-')[2] : this.id.split('-')[1];
-            const file = this.files[0];
+            const id = this.id.includes('new') ? this.id.split('-')[2] : this.id.split('-')[1]; // 判斷是新段落還是已存在段落
+            const file = this.files[0]; // 取得選擇的檔案
             if (file) {
-                const reader = new FileReader();
+                const reader = new FileReader(); // 建立 FileReader 物件來讀取檔案
                 reader.onload = function (e) {
-                    const preview = document.getElementById(`preview-${id}`);
+                    const preview = document.getElementById(`preview-${id}`); // 取得對應的預覽元素
                     if (preview) {
-                        preview.src = e.target.result; // 更新圖片預覽
-                        preview.style.display = 'block'; // 確保圖片顯示
+                        preview.src = e.target.result; // 更新圖片預覽的來源
+                        preview.style.display = 'block'; // 確保圖片預覽顯示
                     } else {
+                        // 如果預覽元素不存在，動態建立一個新的圖片預覽元素
                         const imgPreview = document.createElement('img');
-                        imgPreview.id = `preview-${id}`;
-                        imgPreview.src = e.target.result;
-                        imgPreview.alt = '圖片預覽';
-                        imgPreview.style = 'max-width: 200px; max-height: 200px;';
-                        input.parentNode.appendChild(imgPreview);
+                        imgPreview.id = `preview-${id}`; // 設定圖片預覽的 ID
+                        imgPreview.src = e.target.result; // 設定圖片來源
+                        imgPreview.alt = '圖片預覽'; // 設定替代文字
+                        imgPreview.style = 'max-width: 200px; max-height: 200px;'; // 設定圖片大小
+                        input.parentNode.appendChild(imgPreview); // 將圖片預覽元素加入到 DOM 中
                     }
                 };
-                reader.readAsDataURL(file); // 預覽圖片
+                reader.readAsDataURL(file); // 讀取檔案並轉換為 Data URL 格式
             }
         });
     });
 
     function uploadImage(input, id, newsId) {
-        const file = input.files[0];
+        const file = input.files[0]; // 取得選擇的檔案
         if (!file) {
-            alert('請選擇圖片檔案！');
+            alert('請選擇圖片檔案！'); // 如果沒有選擇檔案，顯示提示訊息
             return;
         }
 
-        const formData = new FormData();
-        formData.append('content_file', file); // 確保檔案正確附加
-        formData.append('news_id', newsId);
-        formData.append('category', 1); // 類別為圖片
-        formData.append('order', order);
+        const formData = new FormData(); // 建立 FormData 物件來傳遞檔案資料
+        formData.append('content_file', file); // 將檔案加入到 FormData 中
+        formData.append('news_id', newsId); // 加入新聞 ID
+        formData.append('category', 1); // 設定類別為圖片
+        formData.append('order', order); // 設定段落順序
 
+        // 發送檔案上傳請求到後端
         fetch(`{{ route('staff.reporter.news.imageTextParagraphs.store') }}`, {
-            method: 'POST',
+            method: 'POST', // 使用 POST 方法發送請求
             headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' // 加入 CSRF Token 以保護請求
             },
-            body: formData
+            body: formData // 傳遞包含內容資料的 FormData
         })
-        .then(response => response.json())
+        .then(response => response.json()) // 將伺服器回應轉換為 JSON 格式
         .then(data => {
             if (data.success) {
-                console.log('檔案上傳成功:', data.url);
+                alert('內容已成功儲存！'); // 如果儲存成功，顯示提示訊息
+                if (data.url) {
+                    const preview = document.getElementById(`preview-${id}`); // 取得對應的預覽元素
+                    if (preview) {
+                        preview.src = data.url; // 更新圖片預覽的來源
+                        preview.style.display = 'block'; // 確保圖片預覽顯示
+                    }
+                }
             } else {
-                console.error('檔案上傳失敗:', data.message);
-                alert(`檔案上傳失敗：${data.message || '請稍後再試。'}`);
+                alert(`儲存失敗：${data.message || '請稍後再試。'}`); // 如果儲存失敗，顯示錯誤訊息
             }
         })
         .catch(error => {
-            console.error('檔案上傳錯誤:', error);
-            alert('檔案上傳失敗，請稍後再試。');
+            console.error('儲存失敗，錯誤訊息:', error); // 捕捉錯誤並顯示在控制台
+            alert('儲存失敗，請稍後再試。'); // 顯示錯誤提示訊息
         });
     }
 
     function attachNewContentEvents() {
+        // 綁定儲存按鈕的點擊事件
         document.querySelectorAll('.save-content-btn').forEach(button => {
             button.addEventListener('click', function () {
                 const id = this.getAttribute('data-id');
@@ -255,141 +264,147 @@
                 }
 
                 fetch(`{{ route('staff.reporter.news.imageTextParagraphs.store') }}`, {
-                    method: 'POST',
+                    method: 'POST', // 使用 POST 方法發送請求
                     headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // 加入 CSRF Token 以保護請求
                     },
-                    body: formData
+                    body: formData // 傳遞包含內容資料的 FormData
                 })
-                .then(response => response.json())
+                .then(response => response.json()) // 將伺服器回應轉換為 JSON 格式
                 .then(data => {
                     if (data.success) {
-                        alert('內容已成功儲存！');
+                        alert('內容已成功儲存！'); // 如果儲存成功，顯示提示訊息
                         if (data.url) {
-                            const preview = document.getElementById(`preview-${id}`);
+                            const preview = document.getElementById(`preview-${id}`); // 取得對應的預覽元素
                             if (preview) {
-                                preview.src = data.url; // 更新圖片預覽
-                                preview.style.display = 'block'; // 確保圖片顯示
+                                preview.src = data.url; // 更新圖片預覽的來源
+                                preview.style.display = 'block'; // 確保圖片預覽顯示
                             }
                         }
                     } else {
-                        alert(`儲存失敗：${data.message || '請稍後再試。'}`);
+                        alert(`儲存失敗：${data.message || '請稍後再試。'}`); // 如果儲存失敗，顯示錯誤訊息
                     }
                 })
                 .catch(error => {
-                    console.error('儲存失敗，錯誤訊息:', error);
-                    alert('儲存失敗，請稍後再試。');
+                    console.error('儲存失敗，錯誤訊息:', error); // 捕捉錯誤並顯示在控制台
+                    alert('儲存失敗，請稍後再試。'); // 顯示錯誤提示訊息
                 });
             });
         });
 
+        // 綁定刪除按鈕的點擊事件
         document.querySelectorAll('.remove-content-btn').forEach(button => {
             button.addEventListener('click', function () {
-                const id = this.getAttribute('data-id');
-                const item = document.getElementById(`content-item-${id}`);
+                const id = this.getAttribute('data-id'); // 取得段落的 ID
+                const item = document.getElementById(`content-item-${id}`); // 取得對應的段落元素
                 if (item) {
-                    item.remove();
-                    updateOrder();
+                    item.remove(); // 從 DOM 中移除該段落
+                    updateOrder(); // 更新段落順序
                 }
             });
         });
     }
 
     function attachExistingContentEvents() {
+        // 綁定更新按鈕的點擊事件
         document.querySelectorAll('.update-content-btn').forEach(button => {
             button.addEventListener('click', function () {
-                const id = this.getAttribute('data-id');
-                const item = document.getElementById(`content-item-${id}`);
-                const title = item.querySelector(`input[name="contents[${id}][title]"]`)?.value || null;
-                const contentInput = item.querySelector(`textarea[name="contents[${id}][content]"], input[name="contents[${id}][content_file]"]`);
-                const content = contentInput.type === 'file' ? contentInput.files[0] : contentInput.value;
+                const id = this.getAttribute('data-id'); // 取得段落的 ID
+                const item = document.getElementById(`content-item-${id}`); // 取得對應的段落元素
+                const title = item.querySelector(`input[name="contents[${id}][title]"]`)?.value || null; // 取得標題
+                const contentInput = item.querySelector(`textarea[name="contents[${id}][content]"], input[name="contents[${id}][content_file]"]`); // 取得內容輸入框
+                const content = contentInput.type === 'file' ? contentInput.files[0] : contentInput.value; // 判斷內容是檔案還是文字
 
-                const formData = new FormData();
-                formData.append('_method', 'PATCH'); // 明確指定 PATCH 方法
-                formData.append('title', title);
+                const formData = new FormData(); // 建立 FormData 物件
+                formData.append('_method', 'PATCH'); // 指定 HTTP 方法為 PATCH
+                formData.append('title', title); // 加入標題
                 if (contentInput.type === 'file' && content) {
-                    formData.append('content_file', content);
+                    formData.append('content_file', content); // 如果是檔案，加入檔案內容
                 } else {
-                    formData.append('content', content);
+                    formData.append('content', content); // 如果是文字，加入文字內容
                 }
 
+                // 發送更新請求到後端
                 fetch(`{{ route('staff.reporter.news.imageTextParagraphs.update', '') }}/${id}`, {
-                    method: 'POST', // 使用 POST 方法來模擬 PATCH
+                    method: 'POST', // 使用 POST 方法模擬 PATCH
                     headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // 加入 CSRF Token
                     },
-                    body: formData
+                    body: formData // 傳遞 FormData 資料
                 })
-                .then(response => response.json())
+                .then(response => response.json()) // 將伺服器回應轉換為 JSON 格式
                 .then(data => {
                     if (data.success) {
-                        alert('內容已成功更新！');
+                        alert('內容已成功更新！'); // 如果更新成功，顯示提示訊息
                         if (data.url) {
-                            const preview = document.getElementById(`preview-${id}`);
+                            const preview = document.getElementById(`preview-${id}`); // 取得對應的預覽元素
                             if (preview) {
-                                preview.src = data.url; // 更新圖片預覽
-                                preview.style.display = 'block'; // 確保圖片顯示
+                                preview.src = data.url; // 更新圖片預覽的來源
+                                preview.style.display = 'block'; // 確保圖片預覽顯示
                             }
                         }
                     } else {
-                        alert('更新失敗，請稍後再試。');
-                        console.error('後端回傳錯誤:', data);
+                        alert('更新失敗，請稍後再試。'); // 如果更新失敗，顯示錯誤訊息
+                        console.error('後端回傳錯誤:', data); // 顯示後端回傳的錯誤訊息
                     }
                 })
                 .catch(error => {
-                    console.error('更新失敗，錯誤訊息:', error);
-                    alert('更新失敗，請稍後再試。');
+                    console.error('更新失敗，錯誤訊息:', error); // 捕捉錯誤並顯示在控制台
+                    alert('更新失敗，請稍後再試。'); // 顯示錯誤提示訊息
                 });
             });
         });
 
+        // 綁定刪除按鈕的點擊事件
         document.querySelectorAll('.remove-content-btn').forEach(button => {
             button.addEventListener('click', function () {
-                const id = this.getAttribute('data-id');
+                const id = this.getAttribute('data-id'); // 取得段落的 ID
                 fetch(`{{ route('staff.reporter.news.imageTextParagraphs.destroy', '') }}/${id}`, {
-                    method: 'DELETE',
+                    method: 'DELETE', // 使用 DELETE 方法發送請求
                     headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // 加入 CSRF Token
                     }
                 })
-                .then(response => response.json())
+                .then(response => response.json()) // 將伺服器回應轉換為 JSON 格式
                 .then(data => {
                     if (data.success) {
-                        const item = document.getElementById(`content-item-${id}`);
+                        const item = document.getElementById(`content-item-${id}`); // 取得對應的段落元素
                         if (item) {
-                            item.remove();
-                            updateOrder();
+                            item.remove(); // 從 DOM 中移除該段落
+                            updateOrder(); // 更新段落順序
                         }
-                        alert('內容已刪除！');
+                        alert('內容已刪除！'); // 顯示刪除成功訊息
                     } else {
-                        alert('刪除失敗，請稍後再試。');
+                        alert('刪除失敗，請稍後再試。'); // 如果刪除失敗，顯示錯誤訊息
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert('刪除失敗，請稍後再試。');
+                    console.error('Error:', error); // 捕捉錯誤並顯示在控制台
+                    alert('刪除失敗，請稍後再試。'); // 顯示錯誤提示訊息
                 });
             });
         });
 
+        // 綁定上移按鈕的點擊事件
         document.querySelectorAll('.move-up-btn').forEach(button => {
             button.addEventListener('click', function () {
-                const id = this.getAttribute('data-id');
-                const item = document.getElementById(`content-item-${id}`);
+                const id = this.getAttribute('data-id'); // 取得段落的 ID
+                const item = document.getElementById(`content-item-${id}`); // 取得對應的段落元素
                 if (item && item.previousElementSibling) {
-                    item.parentNode.insertBefore(item, item.previousElementSibling);
-                    updateOrder();
+                    item.parentNode.insertBefore(item, item.previousElementSibling); // 將段落移到前一個元素之前
+                    updateOrder(); // 更新段落順序
                 }
             });
         });
 
+        // 綁定下移按鈕的點擊事件
         document.querySelectorAll('.move-down-btn').forEach(button => {
             button.addEventListener('click', function () {
-                const id = this.getAttribute('data-id');
-                const item = document.getElementById(`content-item-${id}`);
+                const id = this.getAttribute('data-id'); // 取得段落的 ID
+                const item = document.getElementById(`content-item-${id}`); // 取得對應的段落元素
                 if (item && item.nextElementSibling) {
-                    item.parentNode.insertBefore(item.nextElementSibling, item);
-                    updateOrder();
+                    item.parentNode.insertBefore(item.nextElementSibling, item); // 將段落移到下一個元素之後
+                    updateOrder(); // 更新段落順序
                 }
             });
         });
