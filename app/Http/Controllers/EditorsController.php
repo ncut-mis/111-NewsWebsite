@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Editors;
+use App\Models\Editor;
 use App\Models\News;
 use App\Http\Requests\StoreeditorsRequest;
 use App\Http\Requests\UpdateeditorsRequest;
 use Illuminate\Http\Request;
+use App\Models\Staff;
+use App\Models\Category;
+use App\Models\ImageTextParagraph;
 
 class EditorsController extends Controller
 {
@@ -145,5 +148,15 @@ class EditorsController extends Controller
         $news->save();
 
         return redirect()->route('staff.editor.review')->with('success', '新聞已退回');
+    }
+    public function check($id)
+    {
+
+        $newsItem = News::findOrFail($id); // 或是你要看的資料
+        $categories = Category::all();
+        $relatedParagraphs = ImageTextParagraph::where('news_id', $newsItem->id)
+            ->orderBy('order')
+            ->get();
+        return view('staff.editor.editornews', compact('newsItem','categories', 'relatedParagraphs'));
     }
 }

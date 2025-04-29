@@ -64,8 +64,11 @@
                                             {{ $item->title }}
                                         </a>
                                     </h2>
+                                    <!--記者名子-->
+                                    @if($item->reporter && $item->reporter->role == 0)
+                                        <p class="text-muted mb-0">記者：{{ $item->reporter->name }}</p>
+                                    @endif
 
-                                    <!--  <p class="mb-0">點擊查看詳細內容。</p> -->
                                 </div>
                             </div>
                         </div>

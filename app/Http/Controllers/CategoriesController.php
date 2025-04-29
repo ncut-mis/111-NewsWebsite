@@ -91,4 +91,6 @@ class CategoriesController extends Controller
 
         return view('dashboard', compact('categories', 'news'));
     }
+
+
 }

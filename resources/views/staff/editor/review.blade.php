@@ -33,7 +33,7 @@
                     <td>待審核</td>
                     <td style="width: 220px">
                         <!-- 查看新聞按鈕 -->
-                        <a href="{{ route('show.new', ['id' => $item->id]) }}" class="btn btn-primary btn-sm me-1">查看</a>
+                        <a href="{{ route('staff.editor.editornews', ['id' => $item->id]) }}" class="btn btn-primary btn-sm me-1">查看</a>
                         <!-- 通過新聞按鈕 -->
                         <form action="{{ route('staff.editor.approve', $item->id) }}" method="POST" style="display: inline-block" class="me-1">
                             @csrf

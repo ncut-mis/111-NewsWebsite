@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageTextParagraphsController;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -60,6 +61,7 @@ Route::prefix('staff/editor')->name('staff.editor.')->middleware('staff.auth')->
     Route::get('removed', [EditorsController::class, 'removed'])->name('removed');
     Route::patch('news/{news}/republish', [EditorsController::class, 'republish'])->name('republish');
     Route::patch('news/{news}/return', [EditorsController::class, 'return'])->name('return');
+    Route::get('/editornews/{id}', [EditorsController::class, 'check'])->name('editornews');
 });
 
 Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(function () {

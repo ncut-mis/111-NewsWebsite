@@ -14,7 +14,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $newsQuery = News::with(['imageParagraph']) // 確保載入圖片段落的關聯
+        $newsQuery = News::with(['imageParagraph','reporter']) // 確保載入圖片段落的關聯
             ->where('status', 2);
 
         if ($request->category_id === 'live') {
@@ -42,7 +42,8 @@ class HomeController extends Controller
         $relatedParagraphs = ImageTextParagraph::where('news_id', $newsItem->id)
             ->orderBy('order')
             ->get();
+        $categories = \App\Models\Category::all();
 
-        return view('show.new', compact('newsItem', 'relatedParagraphs')); // 建立一個新的視圖 show/new.blade.php
+        return view('show.new', compact('newsItem', 'relatedParagraphs','categories')); // 建立一個新的視圖 show/new.blade.php
     }
 }

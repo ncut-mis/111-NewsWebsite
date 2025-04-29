@@ -40,10 +40,10 @@
 
 
                 <div class="container mt-3">
-                <!--記者名子-->
-                @if($newsItem->reporter && $newsItem->reporter->role == 0)
-                    <p class="text-muted mb-0">記者：{{ $newsItem->reporter->name }}</p>
-                @endif
+                    <!--記者名子-->
+                    @if($newsItem->reporter && $newsItem->reporter->role == 0)
+                        <p class="text-muted mb-0">記者：{{ $newsItem->reporter->name }}</p>
+                    @endif
                 </div>
 
                 <div class="container mt-3" style="margin-top: 15px;"></div>
@@ -92,14 +92,9 @@
                 @endif
 
                 <div class="d-flex gap-2 mt-3">
-                    <a href="{{ route('home.index') }}" class="btn btn-secondary">返回首頁</a>
 
-                    <form action="{{ route('favorite.add') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="news_id" value="{{ $newsItem->id }}">
-                        <button type="submit" class="btn btn-outline-primary">加入收藏</button>
-                    </form>
-                </div>
+                        <a href="{{ route('staff.editor.review') }}" class="btn btn-secondary">返回審核頁面</a>
+
                 </div>
             </div>
         </div>
