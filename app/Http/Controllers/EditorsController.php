@@ -146,4 +146,11 @@ class EditorsController extends Controller
 
         return redirect()->route('staff.editor.review')->with('success', '新聞已退回');
     }
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $news = News::where('title', 'like', '%' . $query . '%')->get(); // 僅查詢 title
+
+        return view('staff.editor.news.search', compact('news', 'query')); // 傳遞查詢結果與關鍵字
+    }
 }

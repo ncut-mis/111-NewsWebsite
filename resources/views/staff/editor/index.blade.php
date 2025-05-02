@@ -17,6 +17,7 @@
             <th scope="col">#</th>
             <th scope="col">標題</th>
             <th scope="col">狀態</th>
+            <th scope="col">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -39,6 +40,37 @@
                             已退回
                         @elseif($new->status == 4)
                             已下架
+                        @endif
+                    </td>
+                    <td>
+                        @if($new->status == 1)
+                            <form action="{{ route('staff.editor.approve', $new->id) }}" method="post" style="display: inline-block;">
+                                @csrf
+                                @method('patch')
+                                <button type="submit" class="btn btn-success btn-sm">通過</button>
+                            </form>
+                            <form action="{{ route('staff.editor.return', $new->id) }}" method="post" style="display: inline-block;">
+                                @csrf
+                                @method('patch')
+                                <button type="submit" class="btn btn-danger btn-sm">退回</button>
+                            </form>
+                        @elseif($new->status == 2)
+                            <form action="{{ route('staff.editor.unpublish', $new->id) }}" method="post" style="display: inline-block;">
+                                @csrf
+                                @method('patch')
+                                <button type="submit" class="btn btn-warning btn-sm">下架</button>
+                            </form>
+                        @elseif($new->status == 4)
+                            <form action="{{ route('staff.editor.republish', $new->id) }}" method="post" style="display: inline-block;">
+                                @csrf
+                                @method('patch')
+                                <button type="submit" class="btn btn-success btn-sm">重新上架</button>
+                            </form>
+                            <form action="{{ route('staff.editor.return', $new->id) }}" method="post" style="display: inline-block;">
+                                @csrf
+                                @method('patch')
+                                <button type="submit" class="btn btn-danger btn-sm">退回</button>
+                            </form>
                         @endif
                     </td>
                 </tr>

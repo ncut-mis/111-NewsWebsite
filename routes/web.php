@@ -60,6 +60,7 @@ Route::prefix('staff/editor')->name('staff.editor.')->middleware('staff.auth')->
     Route::get('removed', [EditorsController::class, 'removed'])->name('removed');
     Route::patch('news/{news}/republish', [EditorsController::class, 'republish'])->name('republish');
     Route::patch('news/{news}/return', [EditorsController::class, 'return'])->name('return');
+    Route::get('search', [EditorsController::class, 'search'])->name('search'); // 確保路由與控制器方法一致
 });
 
 Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(function () {
@@ -82,6 +83,7 @@ Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(functi
     Route::post('content/update-order', [ImageTextParagraphsController::class, 'updateOrder'])->name('imageTextParagraphs.updateOrder');
     Route::patch('content/{id}', [ImageTextParagraphsController::class, 'update'])->name('imageTextParagraphs.update');
     Route::patch('{news}/submit', [NewsController::class, 'submit'])->name('submit');
+    Route::get('search', [NewsController::class, 'search'])->name('search'); // 確保路由與控制器方法一致
 });
 Route::post('/favorite', [\App\Http\Controllers\FavoritesController::class, 'addFavorite'])->middleware('auth')->name('favorite.add');
 Route::get('/favorites', [\App\Http\Controllers\FavoritesController::class, 'favoriteList'])->middleware('auth')->name('favorites.index');
