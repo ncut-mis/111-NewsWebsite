@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\News;
 use App\Models\users;
 use App\Http\Requests\StoreusersRequest;
 use App\Http\Requests\UpdateusersRequest;
+use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
@@ -14,6 +16,13 @@ class UsersController extends Controller
     public function index()
     {
         return view('home.index');
+        // 只搜尋已通過的新聞（status = 2）
+        $news = News::where('status', 2)
+            ->where('title', 'like', '%' . $query . '%')
+            ->with('reporter', 'imageParagraph')
+            ->get();
+
+        return view('view.home.search', compact('news', 'query'));
     }
 
     /**
@@ -63,4 +72,5 @@ class UsersController extends Controller
     {
         //
     }
+
 }

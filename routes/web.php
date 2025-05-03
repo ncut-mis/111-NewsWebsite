@@ -26,6 +26,7 @@ use App\Http\Controllers\ImageTextParagraphsController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/news/{id}', [HomeController::class, 'show'])->name('show.new');
+Route::get('/search', [HomeController::class, 'search'])->name('search');
 
 Route::get('/dashboard', [CategoriesController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
@@ -65,6 +66,7 @@ Route::prefix('staff/editor')->name('staff.editor.')->middleware('staff.auth')->
     Route::get('/editornews/{id}', [EditorsController::class, 'check'])->name('editornews');
 
     Route::get('search', [EditorsController::class, 'search'])->name('search'); // 確保路由與控制器方法一致
+
 
 });
 

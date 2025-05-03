@@ -46,4 +46,19 @@ class HomeController extends Controller
 
         return view('show.new', compact('newsItem', 'relatedParagraphs','categories')); // 建立一個新的視圖 show/new.blade.php
     }
+    public function search(Request $request)
+    {
+        $query = $request->input('q');  // 取得搜尋關鍵字
+        $categories = Category::all();
+
+        if ($query) {
+            // 搜尋符合條件的新聞
+            $news = News::where('title', 'like', '%' . $query . '%')->get();
+        } else {
+            // 如果沒有搜尋條件，顯示所有新聞
+            $news = News::all();
+        }
+        // 返回搜尋結果並傳遞查詢關鍵字
+        return view('home.index', compact('news', 'query','categories'));
+    }
 }
