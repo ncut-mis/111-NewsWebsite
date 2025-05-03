@@ -191,4 +191,15 @@ class NewsController extends Controller
 
         return redirect()->route('staff.reporter.news.review')->with('success', '新聞已提交');
     }
+
+    /**
+     * 查詢新聞，僅根據標題進行模糊搜尋。
+     */
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $news = News::where('title', 'like', '%' . $query . '%')->get(); // 僅查詢 title
+
+        return view('staff.reporter.news.search', compact('news', 'query')); // 傳遞查詢結果與關鍵字
+    }
 }

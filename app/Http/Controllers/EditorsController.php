@@ -149,6 +149,7 @@ class EditorsController extends Controller
 
         return redirect()->route('staff.editor.review')->with('success', '新聞已退回');
     }
+
     public function check($id)
     {
 
@@ -157,6 +158,14 @@ class EditorsController extends Controller
         $relatedParagraphs = ImageTextParagraph::where('news_id', $newsItem->id)
             ->orderBy('order')
             ->get();
-        return view('staff.editor.editornews', compact('newsItem','categories', 'relatedParagraphs'));
+        return view('staff.editor.editornews', compact('newsItem', 'categories', 'relatedParagraphs'));
+    }
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $news = News::where('title', 'like', '%' . $query . '%')->get(); // 僅查詢 title
+
+        return view('staff.editor.news.search', compact('news', 'query')); // 傳遞查詢結果與關鍵字
+
     }
 }

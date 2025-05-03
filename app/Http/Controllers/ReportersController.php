@@ -30,7 +30,13 @@ class ReportersController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $validated = $request->validate([
+            'staff_id' => 'required|exists:staff,id', // 確保驗證規則正確
+        ]);
+
+        Reporter::create($validated); // 儲存資料
+
+        return redirect()->route('reporters.index')->with('success', '記者已新增！');
     }
 
     /**
@@ -54,7 +60,13 @@ class ReportersController extends Controller
      */
     public function update(Request $request, Reporter $reporter) // 修改參數類型
     {
-        
+        $validated = $request->validate([
+            'staff_id' => 'required|exists:staff,id', // 確保驗證規則正確
+        ]);
+
+        $reporter->update($validated); // 更新資料
+
+        return redirect()->route('reporters.index')->with('success', '記者已更新！');
     }
 
     /**

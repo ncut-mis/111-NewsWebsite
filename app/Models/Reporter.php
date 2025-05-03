@@ -12,12 +12,12 @@ class Reporter extends Model
     protected $table = 'reporters';
 
     protected $fillable = [
-        'staff_id',
+        'staff_id', // 確保這裡包含所有需要的欄位
     ];
 
     // 設定與 Staff 的關聯
     public function staff()
     {
-        return $this->belongsTo(Staff::class); // 更新關聯為 Staff
+        return $this->belongsTo(Staff::class); // 確保關聯正確
     }
 }
