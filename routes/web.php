@@ -9,6 +9,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\EditorsController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\ImageTextParagraphsController;
 
 
@@ -92,13 +93,10 @@ Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(functi
     Route::patch('{news}/submit', [NewsController::class, 'submit'])->name('submit');
     Route::get('search', [NewsController::class, 'search'])->name('search'); // 確保路由與控制器方法一致
 });
-Route::post('/favorite', [\App\Http\Controllers\FavoritesController::class, 'addFavorite'])->middleware('auth')->name('favorite.add');
-Route::get('/favorites', [\App\Http\Controllers\FavoritesController::class, 'favoriteList'])->middleware('auth')->name('favorites.index');
-Route::post('remove-favorite', [\App\Http\Controllers\FavoritesController::class, 'removeFavorite'])->name('favorite.remove');
-//濤
-Route::get('/my-page',function(){
-    return view('welcome');
-});
+Route::post('/favorite', [FavoritesController::class, 'addFavorite'])->middleware('auth')->name('favorite.add');
+Route::get('/favorites', [FavoritesController::class, 'favoriteList'])->middleware('auth')->name('favorites.index');
+Route::post('remove-favorite', [FavoritesController::class, 'removeFavorite'])->name('favorite.remove');
+
 
 require __DIR__.'/auth.php';
 

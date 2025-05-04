@@ -7,24 +7,25 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             {{-- 搜尋表單 --}}
-            <form action="{{ route('search') }}" method="GET" class="d-flex ms-auto me-3">
-                <input type="text" name="q" class="form-control me-2" placeholder="搜尋新聞..." value="{{ request('q') }}">
-                <button type="submit" class="btn btn-outline-light">搜尋</button>
+            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" method="GET" action="{{ route('search') }}">
+                <div class="input-group">
+                    <input class="form-control" type="text" name="q" placeholder="搜尋新聞..." aria-label="搜尋新聞..."
+                           aria-describedby="btnNavbarSearch" value="{{ request('q') }}"/> <!-- 確保 value 正確 -->
+                    <button class="btn btn-primary" id="btnNavbarSearch" type="submit">搜尋</button>
+                </div>
             </form>
 
             <ul class="navbar-nav mb-2 mb-lg-0">
                 @if (Route::has('login'))
                     @auth
-                        <li class="nav-item">
-                            <a href="{{ route('favorites.index') }}" class="btn btn-outline-light me-3">收藏列表</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ Auth::user()->name }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="{{ url('/dashboard') }}">Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{{ route('favorites.index') }}">收藏列表</a></li>
+                                <li><a class="dropdown-item" href="{{ route('profile.edit') }}">會員中心</a></li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
@@ -40,6 +41,7 @@
                         @endif
                     @endauth
                 @endif
+                
             </ul>
         </div>
     </div>
