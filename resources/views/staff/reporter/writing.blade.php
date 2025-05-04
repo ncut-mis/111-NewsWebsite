@@ -17,8 +17,9 @@
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <a class="btn btn-success btn-sm" href="{{ route('staff.reporter.news.create') }}">新增</a>
+        <a class="btn btn-secondary btn-sm" href="{{ route('staff.reporter.news.word') }}">上傳 Word</a>
     </div>
-    <!-- 新增新聞按鈕，連結到新增新聞的路由 -->
+    <!-- 新增新聞按鈕與上傳 Word 按鈕 -->
 
     <table class="table">
         <thead>

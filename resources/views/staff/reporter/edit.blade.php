@@ -281,6 +281,7 @@
                                 preview.style.display = 'block'; // 確保圖片預覽顯示
                             }
                         }
+                        location.reload();
                     } else {
                         alert(`儲存失敗：${data.message || '請稍後再試。'}`); // 如果儲存失敗，顯示錯誤訊息
                     }

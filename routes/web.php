@@ -11,6 +11,7 @@ use App\Http\Controllers\EditorsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\ImageTextParagraphsController;
+use App\Http\Controllers\WordController; // 確保引入 WordController
 
 
 
@@ -92,6 +93,7 @@ Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(functi
     Route::patch('content/{id}', [ImageTextParagraphsController::class, 'update'])->name('imageTextParagraphs.update');
     Route::patch('{news}/submit', [NewsController::class, 'submit'])->name('submit');
     Route::get('search', [NewsController::class, 'search'])->name('search'); // 確保路由與控制器方法一致
+    Route::get('word', [WordController::class, 'index'])->name('word');
 });
 Route::post('/favorite', [FavoritesController::class, 'addFavorite'])->middleware('auth')->name('favorite.add');
 Route::get('/favorites', [FavoritesController::class, 'favoriteList'])->middleware('auth')->name('favorites.index');
