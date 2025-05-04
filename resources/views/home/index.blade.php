@@ -71,8 +71,8 @@
                                             尚未設定發布時間
                                         </p>
                                     @endif
-                                    @if($item->reporter && $item->reporter->role == 0)
-                                        <p class="text-muted mb-0">記者：{{ $item->reporter->name }}</p>
+                                    @if($item->reporter->role == 0)
+                                        <p class="text-muted mb-0">記者：{{ $item->reporter->staff->name }}</p>
                                     @endif
 
                                 </div>

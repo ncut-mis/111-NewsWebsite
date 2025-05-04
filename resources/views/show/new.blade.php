@@ -34,21 +34,23 @@
 
                 @if($newsItem->imageParagraph && $newsItem->imageParagraph->content)
                     <img src="{{ asset('storage/' . $newsItem->imageParagraph->content) }}" class="img-fluid rounded mb-4" alt="{{ $newsItem->title }}">
-                    <p class="text-muted">{{ $newsItem->imageParagraph->title ?? '' }}</p>
+                    <p class="text-muted mb-3">{{ $newsItem->imageParagraph->title ?? '' }}</p>
                 @endif
 
 
 
                 <div class="container mt-3">
                 <!--記者名子-->
-                @if($newsItem->reporter && $newsItem->reporter->role == 0)
-                    <p class="text-muted mb-0">記者：{{ $newsItem->reporter->name }}</p>
+                @if($newsItem->reporter->role == 0)
+                    <p class="text-muted mb-3">
+                        記者：{{ $newsItem->reporter->staff->name }}
+                    </p>
                 @endif
                 </div>
 
                 <div class="container mt-3" style="margin-top: 15px;"></div>
 
-                <p class="text-muted">
+                <p class="text-muted mb-3">
                     發布於：
                     @if($newsItem->created_at)
                         {{ $newsItem->created_at->format('Y-m-d H:i:s') }}

@@ -35,7 +35,7 @@
                             <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
                                 <div class="mb-4">
                                     @if($favorite->news->imageParagraph && $favorite->news->imageParagraph->content)
-                                        <img src="{{ $favorite->news->imageParagraph->content }}" class="img-fluid rounded-3 mb-3" alt="新聞圖片">
+                                        <img src="{{ asset('storage/' . $favorite->news->imageParagraph->content) }}" class="img-fluid rounded-3 mb-3" alt="新聞圖片">
                                     @else
                                         <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3">
                                             <i class="bi bi-newspaper"></i>
@@ -48,7 +48,12 @@
                                     </a>
                                 </h2>
 
-                                <p class="text-muted">{{ optional($favorite->news->created_at)->format('Y-m-d') ?? '無日期' }}</p>
+                                <p class="text-muted small mb-0">
+                                    發布於：{{ $favorite->news->created_at ? $favorite->news->created_at->format('Y-m-d H:i:s') : '尚未設定發布時間' }}
+                                </p>
+                                @if($favorite->news->reporter->role == 0)
+                                    <p class="text-muted mb-0">記者：{{ $favorite->news->reporter->staff->name }}</p>
+                                @endif
 
                                 <!-- 取消收藏按鈕 -->
                                 <form action="{{ route('favorite.remove') }}" method="POST" class="mt-2">

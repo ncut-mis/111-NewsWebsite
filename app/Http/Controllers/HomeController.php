@@ -14,7 +14,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $newsQuery = News::with(['imageParagraph','reporter']) // 確保載入圖片段落的關聯
+        $newsQuery = News::with(['imageParagraph', 'reporter.staff']) // 確保載入 reporter 和 staff 的關聯
             ->where('status', 2);
 
         if ($request->category_id === 'live') {

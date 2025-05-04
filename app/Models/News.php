@@ -32,7 +32,7 @@ class News extends Model
     // 設定與 Reporter 的關聯
     public function reporter()
     {
-        return $this->belongsTo(Staff::class,'reporter_id');
+        return $this->belongsTo(Reporter::class);
     }
 
     // 設定與 Editor 的關聯
