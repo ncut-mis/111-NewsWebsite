@@ -29,7 +29,8 @@
                     <!-- 顯示新聞的序號 -->
                     <th scope="row" style="width: 50px">{{ $counter++ }}</th>
                     <!-- 顯示新聞標題 -->
-                    <td>{{ $new->title }}</td>
+                    <td><a href="{{ route('staff.editor.editornews', ['id' => $new->id]) }}" class="text-decoration-none text-dark">
+                        {{ $new->title }}</td>
                     <!-- 根據狀態顯示對應的文字 -->
                     <td>
                         @if($new->status == 1)

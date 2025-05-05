@@ -27,9 +27,8 @@
                 <th scope="row">{{ $loop->iteration }}</th>
                 <!-- 顯示新聞標題 -->
                 <td>
-                    <a href="{{ route('show.new', ['id' => $new->id]) }}" class="text-decoration-none text-dark">
-                        {{ $new->title }}
-                    </a>
+                    <a href="{{ route('staff.editor.editornews', ['id' => $new->id]) }}" class="text-decoration-none text-dark">
+                    {{ $new->title }}
                 </td>
                 <!-- 顯示新聞狀態 -->
                 <td>已上線</td>

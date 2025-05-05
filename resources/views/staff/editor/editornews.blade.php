@@ -94,6 +94,8 @@
                 <div class="d-flex gap-2 mt-3">
 
                         <a href="{{ route('staff.editor.review') }}" class="btn btn-secondary">返回審核頁面</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-secondary">返回上一頁</a>
+
 
                 </div>
             </div>
