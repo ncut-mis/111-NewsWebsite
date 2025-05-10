@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category; 
-use App\Models\Word;
+use App\Models\Word; // 正確引入 Word 模型
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -23,7 +23,7 @@ class WordController extends Controller
         ]);
 
         try {
-            $news = Word::processWordFile($request->file('file'), $request->category);
+            $news = Word::processWordFile($request->file('file'), $request->category); // 正確使用 processWordFile 方法
 
             return Redirect::route('staff.reporter.news.index')
                 ->with('success', '新聞已成功上傳並解析！');
