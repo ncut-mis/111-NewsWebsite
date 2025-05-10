@@ -14,7 +14,7 @@
 
     <!-- 標題與類別輸入區 -->
     <div class="mb-4 p-3 border rounded bg-light">
-        <form id="news-form" action="{{ route('staff.reporter.news.saveTitleCategory') }}" method="post">
+        <form id="news-form" action="{{ route('staff.reporter.news.uploadWord') }}" method="post" enctype="multipart/form-data">
             @csrf 
             <!-- CSRF 保護 -->
 

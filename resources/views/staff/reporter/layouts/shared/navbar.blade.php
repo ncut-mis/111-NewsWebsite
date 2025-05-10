@@ -1,6 +1,6 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="index.html">記者後臺</a>
+    <a class="navbar-brand ps-3" href="{{ route('staff.reporter.dashboard') }}">記者後台</a>
     <!-- Navbar Buttons-->
     <ul class="navbar-nav me-auto">
         <li class="nav-item">
