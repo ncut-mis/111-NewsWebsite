@@ -84,7 +84,7 @@
                                 @else <!-- 文字或其他 -->
                                 <p>{{ $paragraph->content ?? '' }}</p>
                                 @endif
-                                <p>{{ $paragraph->paragraph_text ?? '' }}</p>
+                                    <p>{{ $paragraph->paragraph_text ?? '' }}</p>
 
                             </div>
                         @endif
@@ -101,9 +101,46 @@
                         <input type="hidden" name="news_id" value="{{ $newsItem->id }}">
                         <button type="submit" class="btn btn-outline-primary">加入收藏</button>
                     </form>
+                    <div class="container mt-3">
+                        <!-- 斷詞按鈕 -->
+                        <button id="tokenize-btn" class="btn btn-success">斷詞分析</button>
+                        <div id="tokenized-output" class="mt-3"></div>
+                    </div>
                 </div>
                 </div>
             </div>
         </div>
     </div>
+@endsection
+@section('page-script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const btn = document.getElementById('tokenize-btn');
+            if (!btn) {
+                console.error('找不到 tokenize-btn 按鈕元素');
+                return;
+            }
+
+            btn.addEventListener('click', async function () {
+                console.log('斷詞按鈕被點了');
+
+                const content = @json($newsItem->title . '。' . implode('', $relatedParagraphs->pluck('paragraph_text')->toArray()));
+
+                const response = await fetch('http://localhost:5000/tokenize', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ text: content }),
+                });
+
+                const data = await response.json();
+
+                const outputDiv = document.getElementById('tokenized-output');
+                outputDiv.innerHTML = data.tokens.map(token =>
+                    `<span class="badge bg-secondary me-1">${token.word} (${token.flag})</span>`
+                ).join('');
+            });
+        });
+    </script>
 @endsection

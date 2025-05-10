@@ -14,6 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet"/>
     @yield('page-style')
 </head>
+@yield('page-script')
 <body>
 
 @include('layouts.shared.navbar')
