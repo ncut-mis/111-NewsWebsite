@@ -25,7 +25,9 @@ use App\Http\Controllers\WordController; // 確保引入 WordController
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('/test', function () {
+    return view('test');
+});
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/news/{id}', [HomeController::class, 'show'])->name('show.new');
 Route::get('/search', [HomeController::class, 'search'])->name('search');

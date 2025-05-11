@@ -24,6 +24,7 @@
         }
     </style>
 </head>
+@yield('page-script')
 <body>
 
 @include('layouts.shared.navbar')
