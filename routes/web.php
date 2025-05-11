@@ -96,7 +96,7 @@ Route::prefix('staff/reporter/news')->name('staff.reporter.news.')->group(functi
     Route::patch('{news}/submit', [NewsController::class, 'submit'])->name('submit');
     Route::get('search', [NewsController::class, 'search'])->name('search'); // 確保路由與控制器方法一致
     Route::get('word', [WordController::class, 'index'])->name('word');
-    Route::post('upload-word', [WordController::class, 'upload'])->name('uploadWord');
+    Route::post('upload-word', [WordController::class, 'upload'])->name('uploadWord'); // 正確綁定 upload 方法
 });
 Route::post('/favorite', [FavoritesController::class, 'addFavorite'])->middleware('auth')->name('favorite.add');
 Route::get('/favorites', [FavoritesController::class, 'favoriteList'])->middleware('auth')->name('favorites.index');
