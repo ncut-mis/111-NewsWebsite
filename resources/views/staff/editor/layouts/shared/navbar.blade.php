@@ -1,6 +1,8 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="{{ route('staff.editor.dashboard') }}">主編後台</a>
+    <a class="navbar-brand ps-3" href="{{ route('staff.editor.dashboard') }}">
+        <img src="{{ asset('image/logo.png') }}" alt="Logo" style="height: 40px;">
+    </a>
     <!-- Navbar Links-->
     <ul class="navbar-nav me-auto">
         <li class="nav-item">
