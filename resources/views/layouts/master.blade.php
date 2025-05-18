@@ -13,12 +13,26 @@
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet"/>
     @yield('page-style')
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main {
+            flex: 1;
+        }
+    </style>
 </head>
 @yield('page-script')
 <body>
 
 @include('layouts.shared.navbar')
-@yield('page-content')
+
+<main>
+    @yield('page-content')
+</main>
+
 @include('layouts.shared.footer')
 
 <!-- Bootstrap core JS-->
