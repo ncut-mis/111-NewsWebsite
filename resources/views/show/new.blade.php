@@ -48,6 +48,7 @@
                     <button id="increase-font" class="pos-btn">A↑</button>
                     <button id="decrease-font" class="pos-btn">A↓</button>
                     <button id="reset-font" class="pos-btn">A↺</button>
+                    <button id="restore-original" class="btn btn-warning" disabled>恢復原文</button>
                 </div>
 
 
@@ -130,6 +131,12 @@
         let posFilter = { v: true, n: true, a: true };//詞性開關
         let spacingEnabled = false; // 空格模式是否開啟
         let baseFontSize = 16; // 初始字體大小
+
+        //恢復
+        let isTokenized = false;
+        let originalTitleHTML = '';
+        let originalParagraphsHTML = {};
+
         // 斷詞後的資料，等斷詞後才有值
         let tokenizedData = null;
 
@@ -140,6 +147,8 @@
             const increaseFontBtn = document.getElementById('increase-font');
             const decreaseFontBtn = document.getElementById('decrease-font');
             const resetFontBtn = document.getElementById('reset-font');
+
+
 
             // 通用的更新樣式函數
             function updateFontSize() {
@@ -166,8 +175,10 @@
 
 
             const tokenizeBtn = document.getElementById('tokenize-btn');
+            const restoreBtn = document.getElementById('restore-original');
             const posTogglePanel = document.querySelector('.pos-toggle-panel');
             const posBtns = document.querySelectorAll('.pos-btn');
+
 
             // 預設詞性按鈕不可操作（斷詞前）
             posBtns.forEach(btn => btn.disabled = true);
@@ -178,6 +189,7 @@
             tokenizeBtn.addEventListener('click', async function () {
                 tokenizeBtn.disabled = true;
                 tokenizeBtn.innerText = '處理中...';
+
 
                 // 擷取所有斷詞目標段落
                 const paragraphElements = document.querySelectorAll('.token-target');
@@ -198,11 +210,22 @@
 
                     tokenizedData = await response.json();
 
+                    // 儲存原始內容
+                    originalTitleHTML = document.querySelector('h1').innerHTML;
+                    originalParagraphsHTML = {};
+                    document.querySelectorAll('.token-target').forEach(p => {
+                        const id = p.dataset.id;
+                        originalParagraphsHTML[id] = p.innerHTML;
+                    });
+
                     // 斷詞後渲染詞
                     renderTokenized(tokenizedData);
 
-                    //立即啟用字體放大
-                    rerenderTokens();
+
+
+
+                    isTokenized = true;
+                    restoreBtn.disabled = false;
 
                     // 斷詞成功，啟用詞性按鈕，且預設全部開啟
                     posBtns.forEach(btn => {
@@ -246,6 +269,32 @@
                 rerenderTokens();  // 確保渲染完立即套用樣式與空格
             }
 
+            restoreBtn.addEventListener('click', () => {
+                if (!isTokenized) return;
+
+                document.querySelector('h1').innerHTML = originalTitleHTML;
+                document.querySelectorAll('.token-target').forEach(p => {
+                    const id = p.dataset.id;
+                    if (originalParagraphsHTML[id]) {
+                        p.innerHTML = originalParagraphsHTML[id];
+                    }
+                });
+
+                // 重置狀態
+                isTokenized = false;
+                tokenizedData = null;
+                spacingEnabled = false;
+                toggleSpacingBtn.innerText = '空格模式：關';
+
+                posBtns.forEach(btn => {
+                    btn.disabled = true;
+                    btn.classList.remove('active');
+                });
+
+                currentFontSize = 1.0;
+                updateFontSize();
+                restoreBtn.disabled = true;
+            });
             //詞語間空格
             const toggleSpacingBtn = document.getElementById('toggle-spacing');
             toggleSpacingBtn.addEventListener('click', () => {
