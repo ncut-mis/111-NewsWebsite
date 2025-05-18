@@ -1,7 +1,7 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" href="{{ route('staff.reporter.dashboard') }}">
-        <img src="{{ asset('image/logo.png') }}" alt="Logo" style="height: 40px;">
+        <img src="{{ asset('image/logoo.png') }}" alt="Logo" style="height: 40px;">
     </a>
     <!-- Navbar Buttons-->
     <ul class="navbar-nav me-auto">

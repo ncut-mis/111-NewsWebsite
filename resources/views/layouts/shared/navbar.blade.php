@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="{{ route('home.index') }}">
-            <img src="{{ asset('image/logo.png') }}" alt="logo.png" style="height: 80px;">
+            <img src="{{ asset('image/logoo.png') }}" alt="logo.png" style="height: 80px;">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
