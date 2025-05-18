@@ -34,7 +34,11 @@
             <tr>
                 <th scope="row">{{ $loop->iteration }}</th> 
                 <!-- 顯示新聞的編號 -->
-                <td>{{ $new->title }}</td> 
+                <td>
+                    <a href="{{ route('staff.reporter.news.show', ['id' => $new->id]) }}" class="text-decoration-none text-dark">
+                        {{ $new->title }}
+                    </a>
+                </td> 
                 <!-- 顯示新聞的標題 -->
                 <td>被退回</td> 
                 <!-- 顯示新聞的狀態 -->

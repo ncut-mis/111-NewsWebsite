@@ -1,31 +1,8 @@
-@extends('layouts.master')
+@extends('staff.editor.layouts.master')
 
 @section('page-title', $newsItem->title)
 
-@section('page-style')
-    <link href="{{ asset('css/home-styles.css') }}" rel="stylesheet"/>
-@endsection
-
 @section('page-content')
-
-    <!-- 分類選單區塊 -->
-    <div class="category-bar bg-dark py-2">
-        <div class="mb-4">
-            <div class="d-flex flex-wrap gap-2 justify-content-center">
-                <!-- 新增的即時按鈕 -->
-                <a href="{{ route('home.index', ['category_id' => 'live']) }}"
-                   class="btn {{ request('category_id') == 'live' ? 'btn-primary text-white' : 'btn-outline text-white' }}">
-                    即時
-                </a>
-                @foreach($categories as $category)
-                    <a href="{{ route('home.index', ['category_id' => $category->id]) }}"
-                       class="btn {{ request('category_id') == $category->id ? 'btn-primary text-white' : 'btn-outline text-white' }}">
-                        {{ $category->name }}
-                    </a>
-                @endforeach
-            </div>
-        </div>
-    </div>
 
     <div class="container mt-5">
         <div class="row">

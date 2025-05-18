@@ -27,7 +27,8 @@
                 <!-- 顯示新聞標題 -->
                 <td>
                     <a href="{{ route('staff.editor.editornews', ['id' => $new->id]) }}" class="text-decoration-none text-dark">
-                    {{ $new->title }}
+                        {{ $new->title }}
+                    </a>
                 </td>
                 <!-- 顯示新聞狀態 -->
                 <td>已退回</td>

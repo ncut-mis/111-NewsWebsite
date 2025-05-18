@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\News;
 use App\Models\Category;
 use App\Models\Favorite;
+use App\Models\ImageTextParagraph;
 
 class NewsController extends Controller
 {
@@ -63,8 +64,14 @@ class NewsController extends Controller
     /**
      * 顯示特定新聞的詳細內容。
      */
-    public function show(News $news)
+    public function show($id)
     {
+        $newsItem = News::findOrFail($id);
+        $categories = Category::all();
+        $relatedParagraphs = ImageTextParagraph::where('news_id', $newsItem->id)
+            ->orderBy('order')
+            ->get();
+        return view('staff.reporter.show', compact('newsItem', 'categories', 'relatedParagraphs'));
 
     }
 

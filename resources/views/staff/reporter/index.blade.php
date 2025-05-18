@@ -27,7 +27,11 @@
             @foreach($news as $item)
                 <tr>
                     <th scope="row" style="width: 50px">{{ $loop->iteration }}</th>
-                    <td>{{ $item->title }}</td>
+                    <td>
+                        <a href="{{ route('staff.reporter.news.show', ['id' => $item->id]) }}" class="text-decoration-none text-dark">
+                            {{ $item->title }}
+                        </a>
+                    </td> 
                     <td>
                         @if($item->status == 0)
                             撰稿中
