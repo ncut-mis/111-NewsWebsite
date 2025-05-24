@@ -36,7 +36,10 @@ class Word extends Model
         $sections = $phpWord->getSections();
         $order = 1;
         $firstTextUsedAsTitle = false;
+        $secondTextUsedAsTitle = false;
         $phpwordImagePaths = [];
+        $paragraphs = [];
+        $secondText = null;
 
         foreach ($sections as $section) {
             foreach ($section->getElements() as $element) {
@@ -60,15 +63,10 @@ class Word extends Model
 
                     $phpwordImagePaths[] = $savePath;
 
-                    ImageTextParagraph::create([
-                        'news_id' => $news->id,
-                        'category' => ImageTextParagraph::CATEGORY_IMAGE,
-                        'title' => '',
+                    $paragraphs[] = [
+                        'type' => 'image',
                         'content' => $savePath,
-                        'order' => $order,
-                        'status' => 1,
-                    ]);
-                    $order++;
+                    ];
                     continue;
                 }
 
@@ -92,49 +90,68 @@ class Word extends Model
                     continue;
                 }
 
+                // 第二段文字作為 order 的 title
+                if (!$secondTextUsedAsTitle) {
+                    $secondText = $text;
+                    $secondTextUsedAsTitle = true;
+                    continue;
+                }
+
                 // 判斷內容類型
                 if (filter_var($text, FILTER_VALIDATE_URL)) {
                     if (preg_match('/(youtube\.com|vimeo\.com)/i', $text)) {
-                        ImageTextParagraph::create([
-                            'news_id' => $news->id,
-                            'category' => ImageTextParagraph::CATEGORY_VIDEO,
-                            'title' => '',
+                        $paragraphs[] = [
+                            'type' => 'video',
                             'content' => $text,
-                            'order' => $order,
-                        ]);
-                        $order++;
+                        ];
                         continue;
                     }
                 }
 
-                // 一般文字段落直接存
-                ImageTextParagraph::create([
-                    'news_id' => $news->id,
-                    'category' => ImageTextParagraph::CATEGORY_TEXT,
-                    'title' => '',
+                // 一般文字段落
+                $paragraphs[] = [
+                    'type' => 'text',
                     'content' => $text,
-                    'order' => $order,
-                ]);
-                $order++;
+                ];
             }
         }
 
-        // 備援：若 PhpWord 沒有解析到任何圖片，則用進階備援方式抓圖
+        // 備援：若 PhpWord 沒有解析到任何圖片，則用 Zip 解壓方式抓圖，並放到最前面
         if (count($phpwordImagePaths) === 0) {
-            $imagesWithPos = self::extractImagesFromDocxWithContext($filePath);
-            // 讓 order 從目前最大 order 開始往後排
-            $baseOrder = $order;
-            foreach ($imagesWithPos as $img) {
-                ImageTextParagraph::create([
-                    'news_id' => $news->id,
-                    'category' => ImageTextParagraph::CATEGORY_IMAGE,
-                    'title' => '',
-                    'content' => $img['file'],
-                    'order' => $baseOrder + $img['position'],
-                    'status' => 1,
+            $images = self::extractImagesFromDocx($filePath);
+            foreach (array_reverse($images) as $imagePath) {
+                array_unshift($paragraphs, [
+                    'type' => 'image',
+                    'content' => $imagePath,
                 ]);
             }
         }
+
+        // 寫入資料庫，order 從 1 開始
+        $order = 1;
+        foreach ($paragraphs as $para) {
+            $data = [
+                'news_id' => $news->id,
+                'content' => $para['content'],
+                'order' => $order++,
+            ];
+            if ($order == 2 && $secondText) {
+                // 第二段文字作為 order=2 的 title
+                $data['title'] = $secondText;
+            } else {
+                $data['title'] = '';
+            }
+            if ($para['type'] === 'image') {
+                $data['category'] = ImageTextParagraph::CATEGORY_IMAGE;
+                $data['status'] = 1;
+            } elseif ($para['type'] === 'video') {
+                $data['category'] = ImageTextParagraph::CATEGORY_VIDEO;
+            } else {
+                $data['category'] = ImageTextParagraph::CATEGORY_TEXT;
+            }
+            ImageTextParagraph::create($data);
+        }
+
         return $news;
     }
 

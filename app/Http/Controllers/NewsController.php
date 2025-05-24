@@ -7,6 +7,7 @@ use App\Models\News;
 use App\Models\Category;
 use App\Models\Favorite;
 use App\Models\ImageTextParagraph;
+use App\Models\Staff;
 
 class NewsController extends Controller
 {
@@ -15,19 +16,21 @@ class NewsController extends Controller
      */
     public function index(Request $request)
     {
-        $status = $request->query('status', null); // 獲取狀態參數
-        $query = News::orderBy('id', 'desc');
-
-        if (!is_null($status)) {
-            $query->where('status', $status); // 根據狀態篩選
+        $status = $request->query('status', null);
+        $staff = auth('staff')->user();
+        $reporter = \App\Models\Reporter::where('staff_id', $staff->id)->first();
+        $news = collect();
+        if ($reporter) {
+            $query = News::orderBy('id', 'desc')
+                ->where('reporter_id', $reporter->id);
+            if (!is_null($status)) {
+                $query->where('status', $status);
+            }
+            $news = $query->get();
         }
-
-        $news = $query->get();
-
         $data = [
             'news' => $news,
         ];
-
         return view('staff.reporter.index', $data);
     }
 
@@ -48,16 +51,17 @@ class NewsController extends Controller
         $data = $request->all();
         if (!$request->has('category_id')) {
             $firstCategory = Category::first();
-            $data['category_id'] = $firstCategory ? $firstCategory->id : null; // 設置默認的 category_id
+            $data['category_id'] = $firstCategory ? $firstCategory->id : null;
         }
-        if (!$request->has('reporter_id')) {
-            $data['reporter_id'] = auth()->user()->id ?? 1; // 設置默認的 reporter_id
+        $staff = auth('staff')->user();
+        $reporter = \App\Models\Reporter::where('staff_id', $staff->id)->first();
+        if ($reporter) {
+            $data['reporter_id'] = $reporter->id;
         }
         if (!$request->has('editor_id')) {
-            $data['editor_id'] = auth()->user()->id ?? 1; // 設置默認的 editor_id
+            $data['editor_id'] = 1; // 或根據你的邏輯
         }
         News::create($data);
-
         return redirect()->route('staff.reporter.news.index');
     }
 
@@ -126,7 +130,14 @@ class NewsController extends Controller
      */
     public function writing()
     {
-        $news = News::where('status', 0)->get();
+        $staff = auth('staff')->user();
+        $reporter = \App\Models\Reporter::where('staff_id', $staff->id)->first();
+        $news = collect();
+        if ($reporter) {
+            $news = News::where('status', 0)
+                ->where('reporter_id', $reporter->id)
+                ->get();
+        }
         return view('staff.reporter.writing', ['news' => $news]);
     }
 
@@ -135,7 +146,14 @@ class NewsController extends Controller
      */
     public function review()
     {
-        $news = News::where('status', 1)->get();
+        $staff = auth('staff')->user();
+        $reporter = \App\Models\Reporter::where('staff_id', $staff->id)->first();
+        $news = collect();
+        if ($reporter) {
+            $news = News::where('status', 1)
+                ->where('reporter_id', $reporter->id)
+                ->get();
+        }
         return view('staff.reporter.review', ['news' => $news]);
     }
 
@@ -144,7 +162,14 @@ class NewsController extends Controller
      */
     public function published()
     {
-        $news = News::where('status', 2)->get();
+        $staff = auth('staff')->user();
+        $reporter = \App\Models\Reporter::where('staff_id', $staff->id)->first();
+        $news = collect();
+        if ($reporter) {
+            $news = News::where('status', 2)
+                ->where('reporter_id', $reporter->id)
+                ->get();
+        }
         return view('staff.reporter.published', ['news' => $news]);
     }
 
@@ -153,7 +178,14 @@ class NewsController extends Controller
      */
     public function return()
     {
-        $news = News::where('status', 3)->get();
+        $staff = auth('staff')->user();
+        $reporter = \App\Models\Reporter::where('staff_id', $staff->id)->first();
+        $news = collect();
+        if ($reporter) {
+            $news = News::where('status', 3)
+                ->where('reporter_id', $reporter->id)
+                ->get();
+        }
         return view('staff.reporter.return', ['news' => $news]);
     }
 
@@ -162,7 +194,14 @@ class NewsController extends Controller
      */
     public function removed()
     {
-        $news = News::where('status', 4)->get();
+        $staff = auth('staff')->user();
+        $reporter = \App\Models\Reporter::where('staff_id', $staff->id)->first();
+        $news = collect();
+        if ($reporter) {
+            $news = News::where('status', 4)
+                ->where('reporter_id', $reporter->id)
+                ->get();
+        }
         return view('staff.reporter.removed', ['news' => $news]);
     }
 
@@ -175,15 +214,16 @@ class NewsController extends Controller
             'title' => 'required|string|max:255',
             'category' => 'required|integer|exists:categories,id',
         ]);
-
+        $staff = auth('staff')->user();
+        $reporter = \App\Models\Reporter::where('staff_id', $staff->id)->first();
+        $reporterId = $reporter ? $reporter->id : null;
         News::create([
             'title' => $validated['title'],
             'category_id' => $validated['category'],
-            'reporter_id' => 1, // 預設為 1
-            'editor_id' => 1, // 預設為 1
+            'reporter_id' => $reporterId,
+            'editor_id' => 1,
             'status' => 0,
         ]);
-
         return redirect()->route('staff.reporter.news.writing')->with('success', '標題與類別已儲存！');
     }
 

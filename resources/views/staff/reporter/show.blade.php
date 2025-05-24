@@ -18,8 +18,10 @@
 
                 <div class="container mt-3">
                     <!--記者名子-->
-                    @if($newsItem->reporter && $newsItem->reporter->role == 0)
-                        <p class="text-muted mb-0">記者：{{ $newsItem->reporter->name }}</p>
+                    @if($newsItem->reporter->role == 0)
+                        <p class="text-muted mb-3">
+                            記者：{{ $newsItem->reporter->staff->name }}
+                        </p>
                     @endif
                 </div>
 

@@ -56,13 +56,30 @@
                             <label for="title-{{ $paragraph->id }}" class="form-label">標題 (順序: {{ $paragraph->order }})</label>
                             <input id="title-{{ $paragraph->id }}" name="contents[{{ $paragraph->id }}][title]" type="text" class="form-control mb-2" value="{{ $paragraph->title }}">
                             <label for="content-{{ $paragraph->id }}" class="form-label">{{ $paragraph->category == 1 ? '圖片上傳' : '影片 URL' }} </label>
-                            <input id="content-{{ $paragraph->id }}" name="contents[{{ $paragraph->id }}][content_file]" type="{{ $paragraph->category == 1 ? 'file' : 'url' }}" class="form-control" value="{{ $paragraph->content }}">
+                            <input id="content-{{ $paragraph->id }}" name="contents[{{ $paragraph->id }}][content_file]" type="{{ $paragraph->category == 1 ? 'file' : 'url' }}" class="form-control">
                             <input type="hidden" name="contents[{{ $paragraph->id }}][existing_content]" value="{{ $paragraph->content }}">
-                            @if($paragraph->category == 1)
+                            @if($paragraph->category == 1 && $paragraph->content)
                                 <!-- 圖片預覽 -->
                                 <div class="mt-2">
                                     <img id="preview-{{ $paragraph->id }}" src="{{ asset('storage/' . $paragraph->content) }}" alt="圖片預覽" style="max-width: 200px; max-height: 200px;">
                                 </div>
+                                <script>
+                                    document.getElementById('content-{{ $paragraph->id }}').addEventListener('change', function() {
+                                        const file = this.files[0];
+                                        const preview = document.getElementById('preview-{{ $paragraph->id }}');
+                                        if (file) {
+                                            const reader = new FileReader();
+                                            reader.onload = function(e) {
+                                                preview.src = e.target.result;
+                                                preview.style.display = 'block';
+                                            };
+                                            reader.readAsDataURL(file);
+                                        } else {
+                                            preview.src = "{{ asset('storage/' . $paragraph->content) }}";
+                                            preview.style.display = 'block';
+                                        }
+                                    });
+                                </script>
                             @endif
                         @endif
                         <!-- 隱藏欄位 -->
@@ -306,52 +323,47 @@
         });
     }
 
+    // 綁定已存在內容的事件
     function attachExistingContentEvents() {
         // 綁定更新按鈕的點擊事件
         document.querySelectorAll('.update-content-btn').forEach(button => {
             button.addEventListener('click', function () {
-                const id = this.getAttribute('data-id'); // 取得段落的 ID
-                const item = document.getElementById(`content-item-${id}`); // 取得對應的段落元素
-                const title = item.querySelector(`input[name="contents[${id}][title]"]`)?.value || null; // 取得標題
-                const contentInput = item.querySelector(`textarea[name="contents[${id}][content]"], input[name="contents[${id}][content_file]"]`); // 取得內容輸入框
-                const content = contentInput.type === 'file' ? contentInput.files[0] : contentInput.value; // 判斷內容是檔案還是文字
+                const id = this.getAttribute('data-id');
+                const item = document.getElementById(`content-item-${id}`);
+                const title = item.querySelector(`input[name="contents[${id}][title]"]`)?.value || null;
+                const contentInput = item.querySelector(`textarea[name="contents[${id}][content]"], input[name="contents[${id}][content_file]"]`);
+                const content = contentInput.type === 'file' ? contentInput.files[0] : contentInput.value;
 
-                const formData = new FormData(); // 建立 FormData 物件
-                formData.append('_method', 'PATCH'); // 指定 HTTP 方法為 PATCH
-                formData.append('title', title); // 加入標題
+                const formData = new FormData();
+                formData.append('_method', 'PATCH');
+                formData.append('title', title);
                 if (contentInput.type === 'file' && content) {
-                    formData.append('content_file', content); // 如果是檔案，加入檔案內容
+                    formData.append('content_file', content);
                 } else {
-                    formData.append('content', content); // 如果是文字，加入文字內容
+                    formData.append('content', content);
                 }
 
                 // 發送更新請求到後端
                 fetch(`{{ route('staff.reporter.news.imageTextParagraphs.update', '') }}/${id}`, {
-                    method: 'POST', // 使用 POST 方法模擬 PATCH
+                    method: 'POST',
                     headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // 加入 CSRF Token
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
-                    body: formData // 傳遞 FormData 資料
+                    body: formData
                 })
-                .then(response => response.json()) // 將伺服器回應轉換為 JSON 格式
+                .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('內容已成功更新！'); // 如果更新成功，顯示提示訊息
-                        if (data.url) {
-                            const preview = document.getElementById(`preview-${id}`); // 取得對應的預覽元素
-                            if (preview) {
-                                preview.src = data.url; // 更新圖片預覽的來源
-                                preview.style.display = 'block'; // 確保圖片預覽顯示
-                            }
-                        }
+                        alert('內容已成功更新！');
+                        location.reload(); // 點更新後重整頁面
                     } else {
-                        alert('更新失敗，請稍後再試。'); // 如果更新失敗，顯示錯誤訊息
-                        console.error('後端回傳錯誤:', data); // 顯示後端回傳的錯誤訊息
+                        alert('更新失敗，請稍後再試。');
+                        console.error('後端回傳錯誤:', data);
                     }
                 })
                 .catch(error => {
-                    console.error('更新失敗，錯誤訊息:', error); // 捕捉錯誤並顯示在控制台
-                    alert('更新失敗，請稍後再試。'); // 顯示錯誤提示訊息
+                    console.error('更新失敗，錯誤訊息:', error);
+                    alert('更新失敗，請稍後再試。');
                 });
             });
         });
