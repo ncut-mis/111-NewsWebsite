@@ -40,13 +40,13 @@
                 @endif
 
                 <div id="pos-filter" class="pos-floating-buttons pos-toggle-panel">
-                    <button id="tokenize-btn" class="btn btn-success">斷詞分析</button>
-                    <button class="pos-btn" data-pos="v" disabled>動詞</button>
-                    <button class="pos-btn" data-pos="n" disabled>名詞</button>
-                    <button class="pos-btn" data-pos="a" disabled>形容詞</button>
+                    <button id="tokenize-btn" class="btn btn-success">啟動友善功能</button>
+                    <button class="pos-btn pos-v" data-pos="v" disabled>篩選動詞</button>
+                    <button class="pos-btn pos-n" data-pos="n" disabled>篩選名詞</button>
+                    <button class="pos-btn pos-a" data-pos="a" disabled>篩選形容詞</button>
                     <button id="toggle-spacing" >空格模式：關</button>
-                    <button id="increase-font" class="pos-btn">A↑</button>
-                    <button id="decrease-font" class="pos-btn">A↓</button>
+                    <button id="increase-font" class="pos-btn">A+</button>
+                    <button id="decrease-font" class="pos-btn">A-</button>
                     <button id="reset-font" class="pos-btn">A↺</button>
                     <button id="restore-original" class="btn btn-warning" disabled>恢復原文</button>
                 </div>
@@ -162,11 +162,13 @@
                 currentFontSize += 0.1;
                 updateFontSize();
             });
+
             //最小字體
             decreaseFontBtn.addEventListener('click', () => {
                 currentFontSize = Math.max(0.5, currentFontSize - 0.1); // 最小 0.5em
                 updateFontSize();
             });
+
             //回復原本字體大小
             resetFontBtn.addEventListener('click', () => {
                 currentFontSize = 1.0;
@@ -239,7 +241,7 @@
                     console.error(error);
                 } finally {
                     tokenizeBtn.disabled = false;
-                    tokenizeBtn.innerText = '斷詞分析';
+                    tokenizeBtn.innerText = '功能已啟用..';
                 }
             });
 
@@ -365,7 +367,7 @@
 
         .pos-btn {
             padding: 6px 12px;
-            font-size: 14px;
+            font-size: 20px;
             background-color: #f0f0f0;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -373,8 +375,19 @@
             user-select: none;
         }
 
-        .pos-btn.active {
-            background-color: #007bff;
+        /* 按鈕啟用後的顏色設定 */
+        .pos-btn.pos-v.active {
+            background-color: #e74c3c; /* 紅色 */
+            color: white;
+        }
+
+        .pos-btn.pos-n.active {
+            background-color: #3498db; /* 藍色 */
+            color: white;
+        }
+
+        .pos-btn.pos-a.active {
+            background-color: #2ecc71; /* 綠色 */
             color: white;
         }
 

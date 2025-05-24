@@ -18,12 +18,12 @@ class HomeController extends Controller
             ->where('status', 2);
 
         if ($request->category_id === 'live') {
-            $newsQuery->where('created_at', '>=', now()->subHours(5));
+            $newsQuery->where('created_at', '>=', now()->subDays(3));
         } else if ($request->has('category_id')) {
             $newsQuery->where('category_id', $request->category_id);
         }else {
             // ✅ 沒有選分類時，預設為即時新聞
-            $newsQuery->where('created_at', '>=', now()->subHours(5));
+            $newsQuery->where('created_at', '>=', now()->subDays(3));
         }
 
 
