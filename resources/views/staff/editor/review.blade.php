@@ -28,12 +28,14 @@
                     <!-- 顯示新聞的序號 -->
                     <th scope="row" style="width: 50px">{{ $loop->iteration }}</th>
                     <!-- 顯示新聞標題 -->
-                    <td>{{ $item->title }}</td>
+                    <td>
+                        <a href="{{ route('staff.editor.editornews', ['id' => $item->id]) }}" class="text-decoration-none text-dark">
+                            {{ $item->title }}
+                        </a>
+                    </td>
                     <!-- 顯示新聞狀態 -->
                     <td>待審核</td>
                     <td style="width: 220px">
-                        <!-- 查看新聞按鈕 -->
-                        <a href="{{ route('staff.editor.editornews', ['id' => $item->id]) }}" class="btn btn-primary btn-sm me-1">查看</a>
                         <!-- 通過新聞按鈕 -->
                         <form action="{{ route('staff.editor.approve', $item->id) }}" method="POST" style="display: inline-block" class="me-1">
                             @csrf

@@ -28,7 +28,11 @@
             <tr>
                 <th scope="row">{{ $loop->iteration }}</th>
                 <!-- 顯示新聞的序號 -->
-                <td>{{ $new->title }}</td>
+                <td>
+                    <a href="{{ route('staff.reporter.news.show', ['id' => $new->id]) }}" class="text-decoration-none text-dark">
+                        {{ $new->title }}
+                    </a>
+                </td> 
                 <!-- 顯示新聞標題 -->
                 <td>已上線</td>
                 <!-- 狀態固定為「已上線」 -->
