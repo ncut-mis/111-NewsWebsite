@@ -14,17 +14,18 @@ class Word extends Model
 {
     use HasFactory;
 
-    public static function processWordFile($file, $categoryId)
+    // 增加 $reporterId 參數
+    public static function processWordFile($file, $categoryId, $reporterId)
     {
         // 儲存檔案
         $filePath = $file->store('uploads/word', 'public');
         $fileName = $file->getClientOriginalName();
 
-        // 創建 news 資料
+        // 創建 news 資料，reporter_id 改用傳入的 $reporterId
         $news = News::create([
             'title' => pathinfo($fileName, PATHINFO_FILENAME),
             'category_id' => $categoryId,
-            'reporter_id' => 1,
+            'reporter_id' => $reporterId,
             'editor_id' => 1,
             'status' => 0,
             'web_version' => '',

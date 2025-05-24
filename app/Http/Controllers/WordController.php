@@ -22,13 +22,22 @@ class WordController extends Controller
             'category' => 'required|exists:categories,id', // 確保類別存在於資料庫
         ]);
 
+        $staff = auth('staff')->user();
+        $reporter = \App\Models\Reporter::where('staff_id', $staff->id)->first();
+        if (!$reporter) {
+            return Redirect::back()->with('error', '找不到對應的記者帳號，請聯繫管理員。');
+        }
+
         try {
-            $news = Word::processWordFile($request->file('file'), $request->category); // 正確使用 processWordFile 方法
+            $news = Word::processWordFile(
+                $request->file('file'),
+                $request->category,
+                $reporter->id // 參考NewsController取得reporter_id
+            );
 
             return Redirect::route('staff.reporter.news.index')
                 ->with('success', '新聞已成功上傳並解析！');
         } catch (\Exception $e) {
-            // 捕獲例外並返回錯誤訊息
             return Redirect::back()
                 ->with('error', '上傳失敗，請檢查檔案內容或聯繫管理員。');
         }
