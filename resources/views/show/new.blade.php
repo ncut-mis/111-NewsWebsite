@@ -40,15 +40,15 @@
                 @endif
 
                 <div id="pos-filter" class="pos-floating-buttons pos-toggle-panel">
-                    <button id="tokenize-btn" class="btn btn-success">啟動友善功能</button>
+                    <button id="tokenize-btn" class="btn btn-success">輔助閱讀</button>
                     <button class="pos-btn pos-v" data-pos="v" disabled>篩選動詞</button>
                     <button class="pos-btn pos-n" data-pos="n" disabled>篩選名詞</button>
                     <button class="pos-btn pos-a" data-pos="a" disabled>篩選形容詞</button>
-                    <button id="toggle-spacing" >空格模式：關</button>
+                    <button id="toggle-spacing" >行距模式：關</button>
                     <button id="increase-font" class="pos-btn">A+</button>
                     <button id="decrease-font" class="pos-btn">A-</button>
                     <button id="reset-font" class="pos-btn">A↺</button>
-                    <button id="restore-original" class="btn btn-warning" disabled>恢復原文</button>
+                    <button id="restore-original" class="btn btn-warning" disabled>關閉輔助</button>
                 </div>
 
 
@@ -129,12 +129,12 @@
 
         // posFilter 表示目前哪些詞性被顯示，初始全部關閉(未斷詞前)
         let posFilter = { v: true, n: true, a: true };//詞性開關
-        let spacingEnabled = false; // 空格模式是否開啟
+        let spacingEnabled = false; // 行距模式是否開啟
         let baseFontSize = 16; // 初始字體大小
 
         //恢復
         let isTokenized = false;
-        let originalTitleHTML = '';
+        // let originalTitleHTML = ''; // 不再需要
         let originalParagraphsHTML = {};
 
         // 斷詞後的資料，等斷詞後才有值
@@ -148,11 +148,10 @@
             const decreaseFontBtn = document.getElementById('decrease-font');
             const resetFontBtn = document.getElementById('reset-font');
 
-
-
             // 通用的更新樣式函數
             function updateFontSize() {
-                const textElements = document.querySelectorAll('.token-target, h1');
+                // 只針對 .token-target
+                const textElements = document.querySelectorAll('.token-target');
                 textElements.forEach(el => {
                     el.style.fontSize = `${currentFontSize}em`;
                 });
@@ -192,20 +191,19 @@
                 tokenizeBtn.disabled = true;
                 tokenizeBtn.innerText = '處理中...';
 
-
                 // 擷取所有斷詞目標段落
                 const paragraphElements = document.querySelectorAll('.token-target');
                 const paragraphs = Array.from(paragraphElements).map(p => ({
                     id: p.dataset.id,
                     text: p.innerText.trim()
                 }));
-                const title = @json($newsItem->title);
+                // const title = @json($newsItem->title); // 不再需要
 
                 try {
                     const response = await fetch('http://localhost:5000/tokenize', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ title: title, paragraphs: paragraphs }),
+                        body: JSON.stringify({ /* title: title, */ paragraphs: paragraphs }),
                     });
 
                     if (!response.ok) throw new Error('Failed to fetch tokenized data');
@@ -213,7 +211,7 @@
                     tokenizedData = await response.json();
 
                     // 儲存原始內容
-                    originalTitleHTML = document.querySelector('h1').innerHTML;
+                    // originalTitleHTML = document.querySelector('h1').innerHTML; // 不再需要
                     originalParagraphsHTML = {};
                     document.querySelectorAll('.token-target').forEach(p => {
                         const id = p.dataset.id;
@@ -222,9 +220,6 @@
 
                     // 斷詞後渲染詞
                     renderTokenized(tokenizedData);
-
-
-
 
                     isTokenized = true;
                     restoreBtn.disabled = false;
@@ -241,7 +236,7 @@
                     console.error(error);
                 } finally {
                     tokenizeBtn.disabled = false;
-                    tokenizeBtn.innerText = '功能已啟用..';
+                    tokenizeBtn.innerText = '輔助閱讀';
                 }
             });
 
@@ -257,11 +252,9 @@
                 });
             });
 
-            // 將斷詞結果渲染到標題和段落中
+            // 將斷詞結果渲染到段落中（不處理 h1）
             function renderTokenized(data) {
-                const h1 = document.querySelector('h1');
-                h1.innerHTML = renderTokens(data.title);
-
+                // 不處理 h1
                 document.querySelectorAll('.token-target').forEach(p => {
                     const id = p.dataset.id;
                     if (data.paragraphs[id]) {
@@ -274,7 +267,7 @@
             restoreBtn.addEventListener('click', () => {
                 if (!isTokenized) return;
 
-                document.querySelector('h1').innerHTML = originalTitleHTML;
+                // 不處理 h1
                 document.querySelectorAll('.token-target').forEach(p => {
                     const id = p.dataset.id;
                     if (originalParagraphsHTML[id]) {
@@ -286,7 +279,7 @@
                 isTokenized = false;
                 tokenizedData = null;
                 spacingEnabled = false;
-                toggleSpacingBtn.innerText = '空格模式：關';
+                toggleSpacingBtn.innerText = '行距模式：關';
 
                 posBtns.forEach(btn => {
                     btn.disabled = true;
@@ -297,15 +290,16 @@
                 updateFontSize();
                 restoreBtn.disabled = true;
             });
-            //詞語間空格
+            //行距模式：切換 .token-target 的 line-height
             const toggleSpacingBtn = document.getElementById('toggle-spacing');
             toggleSpacingBtn.addEventListener('click', () => {
                 spacingEnabled = !spacingEnabled;
-                toggleSpacingBtn.innerText = `空格模式：${spacingEnabled ? '開' : '關'}`;
+                toggleSpacingBtn.innerText = `行距模式：${spacingEnabled ? '開' : '關'}`;
 
-                // 重新渲染斷詞內容
-                renderTokenized(tokenizedData);
-                rerenderTokens();
+                // 切換 .token-target 的 line-height
+                document.querySelectorAll('.token-target').forEach(p => {
+                    p.style.lineHeight = spacingEnabled ? '2.5' : '';
+                });
             });
 
             // 根據詞性回傳帶顏色且有 data-flag 的 HTML 字串
@@ -318,12 +312,13 @@
 
                     // 每個詞用 <span> 包起來
                     return `<span data-flag="${token.flag}" style="color:${color}">${token.word}</span>`;
-                }).join(spacingEnabled ? ' ' : '');
+                }).join(''); // 不再插入空格
             }
 
             // 根據 posFilter 狀態顯示或隱藏對應詞性文字(只用 display:none，不刪除)
             function rerenderTokens() {
-                const spans = document.querySelectorAll('h1 span[data-flag], .token-target span[data-flag]');
+                // 只針對 .token-target 內的 span
+                const spans = document.querySelectorAll('.token-target span[data-flag]');
                 spans.forEach(span => {
                     const prefix = span.dataset.flag.charAt(0);
                     span.style.display = '';
